@@ -1,0 +1,132 @@
+$font-primary: 'Lato',Arial, sans-serif;
+$primary: #fbceb5;
+
+.login-box-container{
+    width: 30%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 105px;
+    margin-bottom: 100px;
+
+    .title{
+        font-size: 28px;
+        color: white;
+        text-align: center;
+        margin-bottom: 40px;
+        text-transform: uppercase;
+    }
+
+    .signin-form{
+        .form-group{
+            margin-bottom: 20px;
+            position: relative;
+            .form-control{
+                background-color: transparent;
+                border: none;
+                border-radius: 40px;
+                border: 1px solid transparent;
+                background-color: rgba(255,255,255,.08);
+                color: rgba(255,255,255,1) !important;
+                padding: 15px 20px;
+
+                &:hover, &:focus{
+                    background: transparent;
+                    outline: none;
+                    box-shadow: none;
+                    border-color: rgba(255,255,255,.4);
+                }
+                &:active{
+                    outline: none;
+                }
+                
+            } 
+
+            .form-control.btn{
+                cursor: pointer;
+                text-transform: uppercase;
+                background-color: rgba(34, 33, 33, 0.8);
+    
+                &:hover{
+                    background-color: rgb(211, 76, 76);
+                    color: white;
+                    opacity: 1;
+                    transition: all 0.6s;
+                }
+            }
+
+
+            .checkbox-wrap{
+                color: white;
+                position: absolute;
+                left: 0;
+                cursor: pointer;
+
+                .default-checkmark{
+                    position: absolute;
+                    opacity: 0;
+                    cursor: pointer;
+                    height: 0;
+                    width: 0;
+                }
+
+                .custom-checkmark{
+                    //position: absolute;
+                    // bottom: 0;
+                    // left: 0;
+                    display: inline-block;
+                    width: 12px;
+                    height: 12px;
+                    //background-color: black;
+                    //border: 1px solid white;
+                    border-radius: 2px;
+                    background-color: rgba(250, 245, 245, 0.4);
+                    margin-right: 8px;
+                    
+                }
+
+                .custom-checkmark:after {
+                    //content: "\f0c8";
+                    content: "\2713";
+                    //font-family: "FontAwesome";
+                    position: absolute;
+                    //color:rgba(255,255,255,.1);
+                    color: black;
+                    font-size: 10px;
+                    font-weight: bold;
+                    //margin-top: -4px;
+                    
+                    //@include transition(.3s);
+                    display: none;
+                }
+
+                input:checked ~ .custom-checkmark {
+                   
+                }
+                
+            }
+
+            .forgot-password{
+                color: white;
+                position: absolute;
+                right: 0;
+                cursor: pointer;
+            }
+
+            .link-sign-in{
+                color: white;
+                position: absolute;
+                width: 100%;
+                text-align: center;
+                font-size: 13px;
+                left: 0;
+                cursor: pointer;
+                a{
+                    color: #5e5ef1;              
+                }
+            }
+        }
+    }
+}
+
+

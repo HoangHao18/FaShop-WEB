@@ -1,0 +1,10 @@
+[
+    {
+        "key": true,
+        "desc": "activation"
+    },
+    {
+        "key": false,
+        "desc": "inactivation"
+    }
+]

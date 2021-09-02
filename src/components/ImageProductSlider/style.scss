@@ -1,0 +1,31 @@
+.image-product-slider-container{
+    margin-bottom: 120px;
+    .slick-slide{
+        width: 100%;
+        height: 320px;
+        background-color: aqua;  
+        img{
+            width: 498px;
+
+            height: 357px;
+           // object-fit: cover;
+            display: inline-block;
+            //margin: 20px auto;
+            margin-top: -20px;
+        }
+    }
+
+    .custom-indicator{
+        bottom: -120px;
+    }
+    
+    .custom-indicator li{
+        width: 100px;
+        height: 100px;
+        //filter: grayscale(100%);
+    }
+
+//     .custom-indicator li.slick-active{
+//         filter: grayscale(0%);
+//    }
+}

@@ -1,0 +1,15 @@
+[
+    {
+        "icon": "bx bx-male-sign",
+        "name": "Nam"
+    },
+    {
+        "icon": "bx bx-female-sign",
+        "name": "Nữ"
+    },
+    {
+        "icon": "bx bx-diamond",
+        "name": "Khác"
+    }
+   
+]
