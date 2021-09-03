@@ -11,7 +11,9 @@ import active_items from '../../../../assets/Admin/JsonData/state_active.json';
 import { createUserAsync } from '../../../../redux/actions/userAction';
 import axios from 'axios';
 
-function AddUser() {
+import { ChromePicker } from 'react-color';
+
+function AddProduct() {
     const [formData, setFormData] = useState({
         name: '',
         gender: gender_items && gender_items.length > 0 ? gender_items[0].name : '',
@@ -35,9 +37,11 @@ function AddUser() {
         image: ''
     })
     const [isValidForm, setIsValidForm] = useState(false);
-    const [previewImgURL, setPreviewImgURL] = useState('');
-    const [isOpenPreviewImg, setIsOpenPreviewImg] = useState(false);
-    
+    const [selectedFiles, setSelectedFiles] = useState([]);
+    const [colorList, setColorList] = useState([]);
+    const [color, setColor] = useState("#fff")
+    const [showColorPicker, setShowColorPicker] = useState(false)
+
 
     function handleChangeFormData(key){ 
         return(evt) => {   
@@ -56,25 +60,41 @@ function AddUser() {
 
    
     //img
-    const handleOnChangeImage = (event) => {
-        let dataFile = event.target.files;
-        let file = dataFile[0];
-        if(file){
-            let objectUrl = URL.createObjectURL(file);
-            setPreviewImgURL(objectUrl);
+    const handleDeleteImgRender = (index) => {
+        const newI = selectedFiles.slice();
+        newI.splice(index,1);
+        console.log("splice:",newI)
+        setSelectedFiles(newI) ;
+    }
+
+
+    const handleImageChange = (e) => {
+        // console.log(e.target.files[])
+        if (e.target.files) {
+          const filesArray = Array.from(e.target.files).map((file) =>
+            URL.createObjectURL(file)
+        );
+    
+           console.log("filesArray: ", filesArray);
+    
+          setSelectedFiles((prevImages) => prevImages.concat(filesArray));
+          Array.from(e.target.files).map(
+            (file) => URL.revokeObjectURL(file) // avoid memory leak
+          );
         }
-        setFormData({
-            ...formData,
-            image: file
-        })
-        
-    }
-
-    const openPreviewimage = () => {
-        if(!previewImgURL) return;
-        setIsOpenPreviewImg(true);
-    }
-
+      };
+    
+      const renderPhotos = (source) => {
+        console.log("source: ", source);
+        return source.map((photo, index) => {
+          return (
+            <div className="img-product-2" key={index}>
+                <img src={photo} alt="" key={photo} />
+                <span className="icon-delete-img-2" onClick={()=>handleDeleteImgRender(index)}> <i class='bx bx-x-circle icon-del-img'></i></span>
+            </div>
+            )
+        });
+      };
 
     //end img
 
@@ -123,7 +143,7 @@ function AddUser() {
     const errResponse = useSelector((state) => state.users.errResponse);
     const status = useSelector((state) => state.users.status);
    const bb = "bb"
-    function handleSaveUser(evt){
+    function handleSaveProduct(evt){
         evt.preventDefault();
         console.log("check save onclick")
         if(!isValidForm) return;
@@ -168,7 +188,7 @@ function AddUser() {
                     address: '',
                     image: ''
                 })
-                setPreviewImgURL('');
+               // setPreviewImgURL('');
                 
             } else {
               // Thất bại
@@ -179,47 +199,27 @@ function AddUser() {
 
      let history = useHistory();
      const handleCancel = () => {
-         history.push("/admin/");
+         history.push("/admin/products/");
      }
 
     return (
         <div>
-             <div className="add-box-container">
+             <div className="add-product-box-container">
                 <h2 className="title">
                     <span><i class='bx bx-right-arrow icon'></i></span>
-                    <span>Add user</span>
+                    <span>Add Product</span>
                 </h2>
                 <div>
-                    <form  className="add-user-form" onSubmit={handleSaveUser}>
+                    <form  className="add-product-form" onSubmit={handleSaveProduct}>
                         <div className="row">
-                            <div className="col-8">
-                                <div className="form-group">
-                                    <label className="label">Name</label>
-                                    <input id="name" type="text" className="form-control" placeholder="Name new user..."  
-                                        value={formData.name} 
-                                        onChange={handleChangeFormData('name')} 
-                                    />
-                                   { formValidError.name &&  <label className="label-error">{formValidError.name}</label> }
-                                </div>
-                            </div>
                             <div className="col-4">
                                 <div className="form-group">
-                                    <label className="label">Gender</label>
-                                    <select className="form-control"
-                                        value={formData.gender} 
-                                        onChange={handleChangeFormData('gender')} 
-                                    >
-                                        {gender_items && gender_items.length > 0 &&
-                                            gender_items.map((item, index) => {
-                                                return(
-                                                    <option className="select-item" key={index}>{item.name}
-                                                        {/* <span><i className={item.icon}></i></span>
-                                                        <span></span> */}
-                                                    </option>
-                                                )
-                                            })
-                                        }
-                                    </select>
+                                    <label className="label">SKU</label>
+                                    <input id="sku" type="text" className="form-control" placeholder=""  
+                                        value={formData.sku} 
+                                        onChange={handleChangeFormData('sku')} 
+                                    />
+                                   { formValidError.sku &&  <label className="label-error">{formValidError.sku}</label> }
                                 </div>
                             </div>
                         </div>
@@ -227,12 +227,12 @@ function AddUser() {
                         <div className="row">
                             <div className="col-12">
                                 <div className="form-group">
-                                    <label className="label">Email</label>
-                                    <input id="email" type="email" className="form-control" placeholder="Email new user..." 
-                                        value={formData.email} 
-                                        onChange={handleChangeFormData('email')} 
+                                    <label className="label">Name</label>
+                                    <input id="name" type="text" className="form-control" placeholder="" 
+                                        value={formData.name} 
+                                        onChange={handleChangeFormData('name')} 
                                     />
-                                    { formValidError.email &&  <label className="label-error">{formValidError.email}</label> }
+                                    { formValidError.name &&  <label className="label-error">{formValidError.name}</label> }
                                 </div>
                             </div>
                         </div>
@@ -240,29 +240,7 @@ function AddUser() {
                        <div className="row">
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label className="label">Phone</label>
-                                    <input id="phone" type="text" className="form-control" placeholder="Phone new user..." 
-                                        value={formData.phone} 
-                                        onChange={handleChangeFormData('phone')} 
-                                    />
-                                    { formValidError.phone &&  <label className="label-error">{formValidError.phone}</label> }
-                                </div>
-                            </div>
-                            <div className="col-6">
-                                <div className="form-group">
-                                    <label className="label">Password</label>
-                                    <input id="password" type="password" className="form-control" placeholder="Password new user..." 
-                                        value={formData.password} 
-                                        onChange={handleChangeFormData('password')} 
-                                    />
-                                    { formValidError.password &&  <label className="label-error">{formValidError.password}</label> }
-                                </div>
-                            </div>
-                       </div>
-                       <div className="row">
-                            <div className="col-6">
-                                <div className="form-group">
-                                    <label className="label">Role</label>
+                                    <label className="label">Category</label>
                                     <select className="form-control"
                                         value={formData.role} 
                                         onChange={handleChangeFormData('role')} 
@@ -282,7 +260,7 @@ function AddUser() {
                             </div>
                             <div className="col-6">
                                 <div className="form-group">
-                                    <label className="label">Active</label>
+                                    <label className="label">Manufacture</label>
                                     <select className="form-control"
                                         value={formData.active} 
                                         onChange={handleChangeFormData('active')} 
@@ -302,50 +280,74 @@ function AddUser() {
                             </div>
                        </div>
 
-                        <div className="row">
-                            <div className="col-8">
-                                <div className="form-group">
-                                    <label className="label">Address</label>
-                                    <textarea type="text"  className="form-control address-user" placeholder="Address new user..."
-                                        value={formData.address} 
-                                        onChange={handleChangeFormData('address')} 
-                                    />
-                                    { formValidError.address &&  <label className="label-error">{formValidError.address}</label> }
-                                </div>
-                            </div>
-                            <div className="col-4">
-                                <div className="form-group">
-                                    <label className="label" name="image">Image</label>
-                                    <div className="preview-img"
-                                        style={{ backgroundImage: `url(${previewImgURL})`}}
-                                        onClick = { () => openPreviewimage()}
-                                    ></div>
-                                    <input id="image" type="file" className="form-control "  hidden
-                                        onChange={ (event) => handleOnChangeImage(event)}
-                                    />                     
-                                </div>
-                            </div>      
+                       <div className="row">
+                            <label className="label label-images" name="image">Images</label>
+                            <input type="file" id="file" multiple hidden onChange={handleImageChange} />
+                            <label htmlFor="file" className="label label-choose-img"><i class='bx bx-image-add icon-choose-img'></i>Add Image</label>
+                            <div className="result">{renderPhotos(selectedFiles)}</div>
+                           
                         </div>
 
+
+                        <div className="row">
+                            <label className="label" name="color">Colors</label>
+                            <div className="col-6">
+                                <button onClick={() => setShowColorPicker(showColorPicker => !showColorPicker)}>{showColorPicker ? 'Close color picker' : 'Pick a color'}</button>
+                                {
+                                    showColorPicker && (
+                                    <div>
+                                        <ChromePicker 
+                                        color = {color}
+                                        onChange = {updateColor => setColor(updateColor.hex)}
+                                        />
+                                        <h2>you picked {color}</h2>
+                                    </div>)
+                                }
+                                <h1 style={{ backgroundColor: `${color}` }}>{color}</h1>
+                               
+                            </div>
+                        </div>
+
+
+                        <div className="row">
+                            <div className="col-12">
+                                <div className="form-group">
+                                    <label className="label">Description</label>
+                                    <textarea type="text"  className="form-control address-user" placeholder=""
+                                        value={formData.description} 
+                                        onChange={handleChangeFormData('description')} 
+                                    />
+                                    { formValidError.description &&  <label className="label-error">{formValidError.description}</label> }
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-3">
+                                <div className="form-group">
+                                    <label className="label">Price</label> 
+                                    <input id="price" type="number" className="form-control price" placeholder=""  
+                                        value={formData.price} 
+                                        onChange={handleChangeFormData('price')} 
+                                    /> 
+                                   { formValidError.price &&  <label className="label-error">{formValidError.price}</label> }
+                                </div>
+                            </div>
+                            <div className="col-3">
+                                <div className="form-group vnd">VND</div>
+                            </div>
+                        </div>
+                        
                         <div className="form-group btn-row">
                             <button type="submit" className="form-control btn btn-save">Save</button>
                             <button  className="form-control btn btn-cancel" onClick={()=>handleCancel()}>Cancel</button>
                         </div>
                     </form>
-                </div>   
-
-                {
-                    isOpenPreviewImg === true &&
-                    <Lightbox
-                        mainSrc={previewImgURL }   
-                        onCloseRequest={() => setIsOpenPreviewImg(false)} 
-                    />
-                }
-                
+                </div>          
 
             </div>
         </div>
     )
 }
 
-export default AddUser
+export default AddProduct

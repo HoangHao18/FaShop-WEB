@@ -13,6 +13,9 @@ import EditUser from './Edit/User/EditUser';
 import Manufacture from '../../page/Admin/Manufacture';
 import AddManufacture from './AddNew/Manufacture/AddManufacture';
 import EditManufacture from './Edit/Manufacture/EditManufacture';
+import AddProduct from './AddNew/Product/AddProduct';
+import EditProduct from './Edit/Product/EditProduct';
+import Order from '../../page/Admin/Order';
 
 export default function Routes(){
     return(
@@ -21,7 +24,9 @@ export default function Routes(){
             <Route path='/admin/addUser' component={AddUser}/>
             <Route path='/admin/editUser/:id' component={EditUser}/>
            
-            <Route path='/admin/products' component={Product}/>
+            <Route exact path='/admin/products' component={Product}/>
+            <Route path='/admin/products/addProduct' component={AddProduct}/>
+            <Route path='/admin/products/editProduct/:id' component={EditProduct}/>
 
             <Route exact path='/admin/categories' component={Category}/>
             <Route path='/admin/categories/addCategory' component={AddCategory}/>
@@ -30,6 +35,8 @@ export default function Routes(){
             <Route exact path='/admin/manufactures' component={Manufacture}/>
             <Route path='/admin/manufactures/addManufacture' component={AddManufacture}/>
             <Route path='/admin/manufactures/editManufacture/:id' component={EditManufacture}/>
+
+            <Route exact path='/admin/orders' component={Order}/>
        
         </Switch>
     )

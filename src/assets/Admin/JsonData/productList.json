@@ -1,0 +1,148 @@
+[   
+    {
+        "sku": "SP1011",
+        "name": "Hoodie Xám Trơn",
+        "price": "450000",
+        "colors": [
+            {
+                "namecolor": "red",
+                "size":[
+
+                ]
+            },
+            {
+                "namecolor": "red",
+                "size":[
+                    
+                ]
+            }
+        ],
+        "category": "Hoodie",
+        "manufacture": "NCC Anh Trang",
+        "image": "uploads\\product\\2021-09-02T08-41-35.207Z-hh01.jpg"  
+    },
+    {
+        "sku": "SP1012",
+        "name": "Chân váy caro dài",
+        "price": "450000",
+        "colors": [ 
+            {
+                "namecolor": "red",
+                "size":[
+
+                ]
+            },
+            {
+                "namecolor": "red",
+                "size":[
+                    
+                ]
+            }
+        ],
+        "category": "Váy",
+        "manufacture": "NCC Mai Phương",  
+        "image": "uploads\\product\\2021-09-02T08-41-35.203Z-chanvayC.jpg"   
+    },
+    {
+        "sku": "SP1014",
+        "name": "Chân váy caro ngắn",
+        "price": "450000",
+        "colors": [ 
+            {
+                "namecolor": "red",
+                "size":[
+
+                ]
+            },
+            {
+                "namecolor": "red",
+                "size":[
+                    
+                ]
+            },
+            {
+                "namecolor": "red",
+                "size":[
+                    
+                ]
+            }
+        ],
+        "category": "Váy",
+        "manufacture": "NCC Anh Trang",  
+        "image": "uploads\\product\\2021-09-02T08-41-35.202Z-chanvaya.jpg"   
+    },
+    {
+        "sku": "SP1015",
+        "name": "Áo Cadigan Blue",
+        "price": "450000",
+        "colors": [ 
+            {
+                "namecolor": "red",
+                "size":[
+
+                ]
+            }
+         
+        ],
+        "category": "Cadigan",
+        "manufacture": "NCC Anh Trang",  
+        "image": "uploads\\product\\2021-09-02T08-41-35.215Z-len2C.png"   
+    },
+    {
+        "sku": "SP1016",
+        "name": "Quần jean ống xuông",
+        "price": "450000",
+        "colors": [ 
+            {
+                "namecolor": "red",
+                "size":[
+
+                ]
+            },
+            {
+                "namecolor": "red",
+                "size":[
+                    
+                ]
+            }
+        ],
+        "category": "Jean",
+        "manufacture": "NCC May New",  
+        "image": "uploads\\product\\2021-09-02T08-41-35.208Z-jean3.png"   
+    },
+  
+
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]},
+    {"name": "Test",
+        "colors": [ ]}
+   
+]

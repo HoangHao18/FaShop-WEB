@@ -1,81 +1,53 @@
 import './style.css'
 import Table from '../../../components/Admin/Table/Table'
-//import customerList from '../../../assets/Admin/JsonData/customers-list.json'
 
 import React, {useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom'
-import { getListUsersAsync, createUserAsync, deleteUserAsync } from '../../../redux/actions/userAction';
+import { getListProductsAsync, createProductAsync, deleteProductAsync } from '../../../redux/actions/productAction';
 import ToolTable from '../../../components/Admin/ToolTable/ToolTable';
 
-import AddUser from '../../../components/Admin/AddNew/User/AddUser';
+import AddProduct from '../../../components/Admin/AddNew/Product/AddProduct';
+import productList from '../../../assets/Admin/JsonData/productList.json'
 
-
-// const userTableHead = [
-//     {
-//         w: 20, 
-//         nameHead: ''
-//     },
-//     {
-//         w: 20, 
-//         nameHead: 'name'
-//     },
-//     {
-//         w: 20, 
-//         nameHead: 'email'
-//     },
-//     {
-//         w: 20, 
-//         nameHead: 'phone'
-//     },
-//     {
-//         w: 20, 
-//         nameHead: 'role'
-//     },
-//     {
-//         w: 20, 
-//         nameHead: 'location'
-//     },
-//     // 'password',
-    
-// ]
-//const renderHead = (item, index) => <th key={index} style={{width: `'${item.w}px'`}}>{item.nameHead}</th>
 
 
 export default function Product(){
 
     let dispatch = useDispatch();
 
-    const userList = useSelector((state) => state.users.userList);
-    const isLoading = useSelector(state => state.users.isLoading)
-    console.log("userList",userList,"isloading", isLoading);
+    // const productList = useSelector((state) => state.products.productList);
+    // const isLoading = useSelector(state => state.products.isLoading)
+    // console.log("productList",productList,"isloading", isLoading);
+
+    const isLoading = false;
 
     useEffect(() => {
-        dispatch(getListUsersAsync());
+        dispatch(getListProductsAsync());
     }, []);
 
     let history = useHistory();
-    const handleDelete = (userId) => {
-        if(window.confirm("Are you sure wanted to delete the user?")){
-            dispatch(deleteUserAsync(userId));
+    const handleDelete = (productId) => {
+        if(window.confirm("Are you sure wanted to delete the Product?")){
+            dispatch(deleteProductAsync(productId));
         }
     }
-    const handleEdit = (userId) => {
-        history.push(`/admin/edituser/${userId}`);
+    const handleEdit = (productId) => {
+        history.push(`/admin/editproduct/${productId}`);
     }
 
     const [currIndexStart, setCurrIndexStart] = useState(0);
 
     const userTableHead = [
         // <th style={{width: "10px"}}>ID</th>,
-        <th style={{width: "15%"}}>SKU</th>,
-        <th style={{width: "7%"}}>Name</th>,
-        <th style={{width: "15%"}}>Price</th>,
-        <th style={{width: "15%"}}>Colors</th>,
-        <th style={{width: "15%"}}>Category</th>,
-        <th style={{width: "15%"}}>Manufacture</th>,
-        <th style={{width: "11%"}}>Image</th>,
+        <th style={{width: "8%"}}>SKU</th>,
+        <th style={{width: "18%"}}>Name</th>,
+        <th style={{width: "12%"}}>Price</th>,
+        <th style={{width: "7%"}}>Colors</th>,
+        <th style={{width: "12%"}}>Category</th>,
+        <th style={{width: "18%"}}>Manufacture</th>,
+        <th style={{width: "10%"}}>Image</th>,
         <th style={{width: "10%"}}>Action</th>,
     ] 
     const renderHead = (item, index) => item;
@@ -85,13 +57,13 @@ export default function Product(){
             <td>{currIndexStart + index + 1}</td>
             <td>{item.sku}</td>
             <td>{item.name}</td>
-            <td>{item.price}</td>
+            <td>{item.price} VND</td>
             <td>{item.colors.length}</td>
             <td>{item.category}</td>
             <td>{item.manufacture}</td>
             {console.log("image: ",process.env.REACT_APP_API_IMG,item.image)}
             <td>
-                <div className="img-user">
+                <div className="img-product">
                     {
                         item.image ? <img src = {process.env.REACT_APP_API_IMG + item.image}></img> :
                         <img src = "/assets/images/avatarDefault.png"></img>
@@ -107,10 +79,10 @@ export default function Product(){
 
     return(
         <div>
-            <h2 className="page-header">User</h2>
+            <h2 className="page-header">Product</h2>
             {/* <AddUser/> */}
             <ToolTable
-                linkAdd = "/admin/addUser"
+                linkAdd = "/admin/products/addProduct"
             />
             <div className="row">
                 <div className="col-12">
@@ -118,12 +90,12 @@ export default function Product(){
                         <div className="card__body">
                             {
                                 isLoading ? <div>Loading...</div> : 
-                                (userList && userList.length > 0) ? <div>
+                                (productList && productList.length > 0) ? <div>
                                 <Table
                                     limit='5'
                                     headData={userTableHead}
                                     renderHead={(item, index) => renderHead(item, index)}
-                                    bodyData={userList}
+                                    bodyData={productList}
                                     renderBody={(item, index, currIndexStart) => renderBody(item, index)}
                                     passChildData={setCurrIndexStart}
                                 /> 

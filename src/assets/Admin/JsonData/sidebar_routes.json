@@ -21,14 +21,14 @@
         "icon": "bx bx-list-ol"
     },
     {
-        "display_name": "discount",
-        "route": "/admin/discount",
-        "icon": "bx bx-gift"
-    },
-    {
         "display_name": "manufactures",
         "route": "/admin/manufactures",
         "icon": "bx bx-store-alt"
+    },
+    {
+        "display_name": "discount",
+        "route": "/admin/discount",
+        "icon": "bx bx-gift"
     },
     {
         "display_name": "Analytics",
