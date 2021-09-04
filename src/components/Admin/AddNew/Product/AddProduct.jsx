@@ -44,6 +44,7 @@ function AddProduct() {
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [selectedColors, setSelectedColors] = useState([]);
     const [showAddColor, setShowAddColor] = useState(false)
+    const [fileImgPost, setFileImgPost] = useState([])
 
     function handleChangeFormData(key){ 
         return(evt) => {   
@@ -81,6 +82,11 @@ function AddProduct() {
         newI.splice(index,1);
         console.log("splice:",newI)
         setSelectedFiles(newI) ;
+
+        const newImgPost = fileImgPost.slice();
+        newImgPost.splice(index,1);
+        console.log("splice newImgPost:",newImgPost)
+        setFileImgPost(newImgPost) ;
     }
 
 
@@ -92,6 +98,7 @@ function AddProduct() {
         );
     
            console.log("filesArray: ", filesArray);
+           setFileImgPost(e.target.files)
     
           setSelectedFiles((prevImages) => prevImages.concat(filesArray));
           Array.from(e.target.files).map(
@@ -206,34 +213,46 @@ function AddProduct() {
         data.append("name", formData.name);
         data.append("category", formData.category);
         data.append("manufacture", formData.manufacture);
-        data.append("image-product", formData.images);
-        data.append("colors", formData.colors);
+        //data.append("image-product", fileImgPost);
+        data.append("colors", JSON.stringify(formData.colors));
         data.append("description", formData.description);
         data.append("price", formData.price);
+        for (const key of Object.keys(fileImgPost)) {
+            data.append("image-product", fileImgPost[key])
+        }
         axios.post("https://httpbin.org/anything", data).then(res => console.log(res)).catch(err => console.log(err));
         console.log("check valid true data: ", data)
+        console.log("check valid true fileImgPost: 22", fileImgPost)
 
-        // const datapost = {
-        //     "sku": formData.sku,
-        //     "name_product"
-        // }
+        const datapost = {
+            sku: formData.sku,
+            name: formData.name,
+            category: formData.category,
+            manufacture: formData.manufacture,
+            "image-product": formData.images,
+            colors: formData.colors,
+            description: formData.description,
+            price: formData.price
 
-        dispatch(createProductAsync(formData))
+        }
+
+        console.log("datapost: ",datapost)
+        dispatch(createProductAsync(data))
         .then(res => {
             console.log("ok: ",res.ok )
             if (res.ok) {
               // Thành công
             
-                setFormData({
-                    sku: '',
-                    name: '',
-                    category: categoryListName && categoryListName.length > 0 ? categoryListName[0].name : '',
-                    manufacture: manufactureListName && manufactureListName.length > 0 ? manufactureListName[0].name : '',
-                    images: [],
-                    colors: [],
-                    description: '',
-                    price: 0
-                })
+                // setFormData({
+                //     sku: '',
+                //     name: '',
+                //     category: categoryListName && categoryListName.length > 0 ? categoryListName[0].name : '',
+                //     manufacture: manufactureListName && manufactureListName.length > 0 ? manufactureListName[0].name : '',
+                //     images: [],
+                //     colors: [],
+                //     description: '',
+                //     price: 0
+                // })
                // setPreviewImgURL('');
                 
             } else {
@@ -328,8 +347,8 @@ function AddProduct() {
 
                         <div className="row">
                             <label className="label label-images" name="image">Images</label>
-                            <input type="file" id="file" multiple hidden onChange={handleImageChange} />
-                            <label htmlFor="file" className="label label-choose-img"><i class='bx bx-image-add icon-choose-img'></i>Add Image</label>
+                            <input type="file" name="image-product" id="image-product" multiple hidden onChange={handleImageChange} />
+                            <label htmlFor="image-product" className="label label-choose-img"><i class='bx bx-image-add icon-choose-img'></i>Add Image</label>
                             <div className="result">{renderPhotos(selectedFiles)}</div>
                             { formValidError.images &&  <label className="label-error">{formValidError.images}</label> }
                         </div>
