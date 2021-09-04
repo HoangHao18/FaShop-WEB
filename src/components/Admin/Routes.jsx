@@ -17,9 +17,12 @@ import AddProduct from './AddNew/Product/AddProduct';
 import EditProduct from './Edit/Product/EditProduct';
 import Order from '../../page/Admin/Order';
 
+import Home from '../../page/Home';
+
 export default function Routes(){
     return(
         <Switch>
+            <Route  exact path='/' component={Home}/>
             <Route  exact path='/admin' component={User}/>
             <Route path='/admin/addUser' component={AddUser}/>
             <Route path='/admin/editUser/:id' component={EditUser}/>

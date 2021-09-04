@@ -322,7 +322,8 @@ function AddUser() {
                                     ></div>
                                     <input id="image" type="file" className="form-control "  hidden
                                         onChange={ (event) => handleOnChangeImage(event)}
-                                    />                     
+                                    />  
+                                    <label className="form-control choose-img" htmlFor="image"><i class='bx bx-image-add icon-choose-img'></i> Choose Image</label>                   
                                 </div>
                             </div>      
                         </div>

@@ -1,20 +1,21 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { useState } from 'react'
 import { CheckboxOutline } from 'react-ionicons'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import './mystyle.scss'
-import axios from 'axios'
 
-import {actSetLoginAsync} from '../../Store/user/actions'
+import { loginAsync } from '../../redux/actions/authAction';
+import { Link } from 'react-router-dom';
 
 export default function LoginBox(){
     //const isLogin = useNotAuthenticated();
     const history = useHistory();
+    const userCurrent = useSelector((state) => state.auth.userCurrent);
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
-        PhoneNumber: '',
-        Password: ''
+        email: '',
+        password: ''
     })
     function handleChange(key){
         return(evt) => {
@@ -28,42 +29,34 @@ export default function LoginBox(){
     function handleSubmit(evt){
         evt.preventDefault();
         console.log("mmmm")
-        if(!formData.PhoneNumber || !formData.Password){
+        if(!formData.email || !formData.password){
             return
         }
-        dispatch(actSetLoginAsync(formData))
-            .then(res =>{
-                if(res.ok){
-                    //thanh cong
+        dispatch(loginAsync(formData))
+        .then(res => {
+            //console.log("ok: ",res.ok )
+            if (res.ok) {
+              // Thành công
+                setFormData({
+                    email: '',
+                    password: ''
+                })
+                console.log("user current: nene: ", userCurrent)
+                // localStorage.setItem("userCurrent", JSON.stringify(res.userCurrent));
+                // localStorage.setItem("isLogin", true);
+                if(res.userCurrent.role === "Admin" || res.userCurrent.role === "admin"){
+                    history.push('/admin');
+                }else if(res.userCurrent.role === "Guest" || res.userCurrent.role === "guest"){
                     history.push('/');
-                } else {
-                    //that bai
-                    alert('Dang nhap that bai!')
                 }
-            })
+                
+                
+            } else {
+              // Thất bại
+              //console.log("status",status)
+            }
+        });
 
-
-        // var data = JSON.stringify({
-        //     "PhoneNumber": "0396906925",
-        //     "Password": "123123"
-        //   });
-          
-        //   var config = {
-        //     method: 'post',
-        //     url: 'http://207.148.69.136/v1/users/login',
-        //     headers: { 
-        //       'Content-Type': 'application/json'
-        //     },
-        //     data : data
-        //   };
-          
-        //   axios(config)
-        //   .then(function (response) {
-        //     console.log(JSON.stringify(response.data));
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //   });
           
     }
     return(
@@ -72,11 +65,17 @@ export default function LoginBox(){
             <div >
                 <form  className="signin-form" onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <input id="phone-number" type="text" className="form-control" placeholder="Email" value={formData.PhoneNumber} onChange={handleChange('PhoneNumber')} required />
+                        <input id="phone-number" type="text" className="form-control" placeholder="Email" required
+                            value={formData.email} 
+                            onChange={handleChange('email')} 
+                        />
                     </div>
 
                     <div className="form-group">
-                        <input id="password-field" type="password" className="form-control" placeholder="Mật khẩu" value={formData.Password} onChange={handleChange('Password')} required />
+                        <input id="password-field" type="password" className="form-control" placeholder="Mật khẩu" required
+                        value={formData.password} 
+                        onChange={handleChange('password')}  
+                    />
                         {/* <span toggle="#password-field" className="fa fa-fw fa-eye field-icon toggle-password" /> */}
                     </div>
 
@@ -103,7 +102,7 @@ export default function LoginBox(){
                             <a >Forgot Password</a>
                         </div> */}
 
-                        <label className="link-sign-in">Bạn chưa có tài khoản?  <a >ĐĂNG KÝ</a> tại đây!</label>
+                        <label className="link-sign-in">Bạn chưa có tài khoản?  <Link to="/register">ĐĂNG KÝ</Link> tại đây!</label>
                     </div>
                 </form>
             </div>

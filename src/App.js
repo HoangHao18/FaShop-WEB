@@ -20,7 +20,8 @@ import Buy from './page/Buy';
 import DetailsProduct from './page/DetailsProduct';
 import AdminHome from './page/Admin/AdminHome';
 
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -64,6 +65,18 @@ function App() {
             <Route path="/blog" component={Blog}/> 
             <Route path="/buy" component={Buy}/>  
             <Route path="/detailsProduct" component={DetailsProduct}/>
+
+            <ToastContainer
+                position="bottom-right"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
           <Footer/>
         </div>
       </Switch>

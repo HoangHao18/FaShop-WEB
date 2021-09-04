@@ -1,37 +1,72 @@
-import React from 'react'
-
+import React, { useEffect } from 'react'
+import { useHistory, useLocation } from 'react-router'
 import './topnav.css'
 import Dropdown from '../Dropdown/Dropdown'
 
 import user_image from '../../../assets/Admin/images/cat.png'
 import user_menu from '../../../assets/Admin/JsonData/user_menus.json'
 import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../../../redux/actions/authAction'
 
-const curr_user = {
-    display_name: 'Hoang Hao',
-    image: user_image
-}
-
+//console.log("dday nheeeeeeeee: ",curr_user.name)
+// const renderUserToggle = (user) =>(
+//     <div className="topnav__right-user">
+//         <div className="topnav__right-user__image">
+//             {
+//                 user.image ? <img src = {process.env.REACT_APP_API_IMG + user.image}></img> :
+//                 <img src = "/assets/images/avatarDefault.png"></img>
+//             }    
+//         </div>
+//         <div className="topnav__right-user__name">
+//             {user.name}
+//         </div>
+//     </div>
+// )
 const renderUserToggle = (user) =>(
     <div className="topnav__right-user">
         <div className="topnav__right-user__image">
-            <img src={user_image}></img>
+            {
+                user.image && !(user.image===" ") ? <img src = {process.env.REACT_APP_API_IMG + user.image}></img> :
+                <img src = "/assets/images/avatarDefault.png"></img>
+            }    
         </div>
         <div className="topnav__right-user__name">
-            {user.display_name}
+            {user.name}
         </div>
     </div>
 )
-const renderUserMenu =(item, index) => (
-    <Link to='/' key={index}>
-        <div className="notification-item">
-            <i className={item.icon}></i>
-            <span>{item.content}</span>
-        </div>
-    </Link>
-)
+
+
 
 const TopNav = () => {
+
+    // const curr_user = localStorage.getItem("userCurrent") ?  JSON.parse(localStorage.getItem("userCurrent")) : {
+    //     name: "",
+    //     image: "",
+    
+    // }
+
+    const userCurrent = useSelector((state) => state.auth.userCurrent)
+    // const curr_user =  userCurrent ?  userCurrent : {
+    //     name: "",
+    //     image: "",
+    
+    // }
+
+
+    let history = useHistory();
+    let dispatch = useDispatch();
+    const handleLogOut = () => {
+        // localStorage.removeItem("userCurrent");
+        // localStorage.setItem("isLogin",false)
+        //history.push("/");
+
+        dispatch(logout());
+        // console.log("curren user nheeeeeeeeee: ",userCurrent)
+        window.location.href = "/"
+    }
+    
     return (
         <div className="topnav">
             <div className="topnav__search">
@@ -43,9 +78,25 @@ const TopNav = () => {
                 <div className="topnav__right-item">
                     <Dropdown
                         // icon = 'bx bx-user' 
-                        customToggle={()=> renderUserToggle(curr_user)} 
+                        customToggle={()=> renderUserToggle(userCurrent)} 
                         contentData={user_menu}
-                        renderItems={(item, index) => renderUserMenu(item, index)}  
+                        renderItems={
+                        <div>
+                            <div className="notification-item">
+                                <i className='bx bx-user'></i>
+                                <span>Profile</span>
+                            </div>
+                    
+                            <div className="notification-item">
+                                <i className="bx bx-cog"></i>
+                                <span>Settings</span>
+                            </div>
+                    
+                            <div className="notification-item" onClick={()=>handleLogOut()}>
+                                <i className="bx bx-log-out-circle bx-rotate-180"></i>
+                                <span>Logout</span>
+                            </div>
+                        </div>}
                     />
                 </div>
 

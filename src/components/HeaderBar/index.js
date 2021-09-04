@@ -1,32 +1,31 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import './style.scss'
-import { LogOutOutline } from 'react-ionicons'
-import { actSetLoginAsync } from '../../Store/user/actions'
+import { logout } from '../../redux/actions/authAction';
+
 
 
 
 
 export default function HeaderBar(){
-    const isLogin = false;
-    // const isLogin = useSelector(state => state.User.token);
-    // const currentUser = useSelector(state => state.User.currentUser); 
-    // const dispatch = useDispatch();
+    const isLogin = useSelector((state) => state.auth.isLogin);
+    const userCurrent = useSelector(state => state.auth.userCurrent); 
+    let dispatch = useDispatch();
 
-    function handleOnclick(evt){
-        // dispatch(actSetLoginAsync({
-        //     PhoneNumber: '',
-        //     Password: ''
-        // }));
-        // localStorage.removeItem('access_token');
-        // localStorage.removeItem('user_id');
-        // localStorage.removeItem('client_id');
-    }
-    //console.log("c",currentUser)      
+  
+    const handleLogOut = () => {
+        // localStorage.removeItem("userCurrent");
+        // localStorage.setItem("isLogin",false)
+        //history.push("/");
+
+        dispatch(logout());
+        console.log("curren user nheeeeeeeeee: ",userCurrent)
+        //window.location.href = "/"
+    }     
     return(
         <div className="header-bar row">
             <div className="col logo-page">
-            <span><img src="/assets/images/icon_logo_page.png"></img></span>
+                <span><img src="/assets/images/icon_logo_page.png"></img></span>
             </div>
             <div className="col list-page">
                 <ul>
@@ -35,31 +34,27 @@ export default function HeaderBar(){
                     <li><Link to="/blog">Blog</Link></li>
                     <li><Link to="/about">About</Link></li>
                     <li><Link to="/contact">Contact</Link></li>
-                    {/* <li><Link to="/">Features</Link></li>
-                    <li><Link to="/">Shop</Link></li> */}
                 </ul>
             </div>
+
             <div className="col icon-tool-page">
-                <div className="icon_tool">
-                    {
-                        // isLogin && currentUser
-                        isLogin
-                         ? <div>
-                              {/* <span className="name_current_user">{currentUser.Name}</span> */}
-                              <span onClick={handleOnclick} className="icon_logout">
-                              <LogOutOutline
-                                color={'#00000'} 
-                                title={'logout'}
-                                height="30px"
-                                width="30px"
-                                />
-                              </span>
-                            </div> 
-                         :  <span><Link to="/login"><img src="/assets/images/icon_login.png"></img></Link></span>
-                    }
-                    <span><Link to="/cart"><img src="/assets/images/icon_shopping_cart.png"></img></Link></span>
-                </div>
+            <Link to="/cart"><span className="icon-cart-2"><i class='bx bx-shopping-bag icon-2'></i></span></Link>   
+           
+                {
+                    isLogin && userCurrent  ?
+                        <div className="info-user-current"> 
+                            <span className="icon-logout-2" onClick={()=>handleLogOut()}><i class='bx bx-log-out-circle icon-2' ></i></span>  
+                            {
+                                userCurrent.image && !(userCurrent.image===" ") ? <img src = {process.env.REACT_APP_API_IMG + userCurrent.image}></img> :
+                                <img src = "/assets/images/avatarDefault.png"></img>
+                            }  
+                             <span className="iuc-name">{userCurrent.name}</span>
+                        </div> 
+                    : <Link to="/login"><span className="icon-login-2"><i class='bx bx-log-in-circle icon-2' ></i></span></Link>
+                }
+                
             </div>
+           
         </div>
     )
 }

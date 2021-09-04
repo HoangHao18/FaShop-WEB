@@ -18,8 +18,8 @@ function Register() {
         phone: '',
         password: '',
         email: '',
-        role: role_items && role_items.length > 0 ? role_items[0] : '',
-        active: active_items && active_items.length > 0 ? active_items[0].key : '',
+        role: "guest",
+        active: true,
         address: '',
         image: ''
     })
@@ -159,13 +159,13 @@ function Register() {
                     phone: '',
                     password: '',
                     email: '',
-                    role: role_items && role_items.length > 0 ? role_items[0] : '',
-                    active: active_items && active_items.length > 0 ? active_items[0].key : '',
+                    role: "guest",
+                    active: true,
                     address: '',
                     image: ''
                 })
                 setPreviewImgURL('');
-                
+                history.push("/login")
             } else {
               // Thất bại
               console.log("status",status)
