@@ -19,6 +19,24 @@ export const getListManufacturesAsync = () => (dispatch) => {
         });
 }
 
+//get manufacture just name
+const getListManufacturesName = (manufactureListName) => ({
+    type: actionStypes.MANUFACTURE_GET_LIST_NAME,
+    payload: manufactureListName,
+
+})
+
+export const getListManufacturesNameAsync = () => (dispatch) => {
+        ManufactureService.getAllManufacturesName()
+        .then(response => {
+            console.log("response: ", response);
+            dispatch(getListManufacturesName(response.data.reverse()));
+        })
+        .catch((error) => {
+            console.log("error: ",error);
+        });
+}
+
 //create Manufacture
 const createManufacture = () => ({
     type: actionStypes.MANUFACTURE_CREATE_NEW,

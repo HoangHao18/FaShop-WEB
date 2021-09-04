@@ -3,6 +3,7 @@ import *  as actionTypes from '../constants/categoryConstant';
 const initialState = {
     categoryList: null,
     categorySingle: null,
+    categoryListName: null,
     isLoading: true,
     errorMessage: null
 }
@@ -13,6 +14,12 @@ function categoryReducers(state = initialState, action) {
             return{
                 ...state,
                 categoryList: action.payload,
+                isLoading: false,
+            }
+        case actionTypes.CATEGORY_GET_LIST_NAME:
+            return{
+                ...state,
+                categoryListName: action.payload,
                 isLoading: false,
             }
         case actionTypes.CATEGORY_DELETE_BY_ID:

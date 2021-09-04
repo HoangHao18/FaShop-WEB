@@ -19,6 +19,24 @@ export const getListCategoriesAsync = () => (dispatch) => {
         });
 }
 
+//get list category name
+const getListCategoriesName = (categoryListName) => ({
+    type: actionStypes.CATEGORY_GET_LIST_NAME,
+    payload: categoryListName,
+
+})
+
+export const getListCategoriesNameAsync = () => (dispatch) => {
+        CategoryService.getAllCategoriesName()
+        .then(response => {
+            console.log("response: ", response);
+            dispatch(getListCategoriesName(response.data.reverse()));
+        })
+        .catch((error) => {
+            console.log("error: ",error);
+        });
+}
+
 //create category
 const createCategory = () => ({
     type: actionStypes.CATEGORY_CREATE_NEW,

@@ -2,6 +2,7 @@ import *  as actionTypes from '../constants/manufactureConstant';
 
 const initialState = {
     manufactureList: null,
+    manufactureListName: null,
     manufactureSingle: null,
     isLoading: true,
     errorMessage: null
@@ -13,6 +14,12 @@ function manufactureReducers(state = initialState, action) {
             return{
                 ...state,
                 manufactureList: action.payload,
+                isLoading: false,
+            }
+        case actionTypes.MANUFACTURE_GET_LIST_NAME:
+            return{
+                ...state,
+                manufactureListName: action.payload,
                 isLoading: false,
             }
         case actionTypes.MANUFACTURE_DELETE_BY_ID:

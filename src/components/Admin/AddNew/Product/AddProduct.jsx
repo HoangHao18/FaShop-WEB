@@ -2,46 +2,48 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from 'react-router-dom'
 import './style.scss'
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
 
-import gender_items from '../../../../assets/Admin/JsonData/gender.json';
-import role_items from '../../../../assets/Admin/JsonData/role.json';
-import active_items from '../../../../assets/Admin/JsonData/state_active.json';
-import { createUserAsync } from '../../../../redux/actions/userAction';
+import AddProductColor from '../ProductColor/AddProductColor';
+import { getListCategoriesNameAsync } from '../../../../redux/actions/categoryAction';
+import { getListManufacturesNameAsync } from '../../../../redux/actions/manufactureAction';
+import { createProductAsync } from '../../../../redux/actions/productAction';
 import axios from 'axios';
 
-import { ChromePicker } from 'react-color';
-
 function AddProduct() {
+    //get category, manufacture
+    const categoryListName = useSelector((state) => state.categories.categoryListName);
+    const isLoadingCate = useSelector(state => state.categories.isLoading)
+    const manufactureListName = useSelector((state) => state.manufactures.manufactureListName);
+    const isLoadingManu = useSelector(state => state.manufactures.isLoading)
+    useEffect(() => {
+        dispatch(getListCategoriesNameAsync());
+        dispatch(getListManufacturesNameAsync());
+    }, []);
+
+    //end gett category, manufacture
+
     const [formData, setFormData] = useState({
+        sku: '',
         name: '',
-        gender: gender_items && gender_items.length > 0 ? gender_items[0].name : '',
-        phone: '',
-        password: '',
-        email: '',
-        role: role_items && role_items.length > 0 ? role_items[0] : '',
-        active: active_items && active_items.length > 0 ? active_items[0].key : '',
-        address: '',
-        image: ''
+        category: categoryListName && categoryListName.length > 0 ? categoryListName[0].name : '',
+        manufacture: manufactureListName && manufactureListName.length > 0 ? manufactureListName[0].name : '',
+        images: [],
+        colors: [],
+        description: '',
+        price: 0
     })
     const [formValidError, setFomValidError] = useState({
+        sku: '',
         name: '',
-        gender: '',
-        phone: '',
-        password: '',
-        email: '',
-        role: '',
-        active: '',
-        address: '',
-        image: ''
+        images: '',
+        colors: '',
+        description: '',
+        price: ''
     })
     const [isValidForm, setIsValidForm] = useState(false);
     const [selectedFiles, setSelectedFiles] = useState([]);
-    const [colorList, setColorList] = useState([]);
-    const [color, setColor] = useState("#fff")
-    const [showColorPicker, setShowColorPicker] = useState(false)
-
+    const [selectedColors, setSelectedColors] = useState([]);
+    const [showAddColor, setShowAddColor] = useState(false)
 
     function handleChangeFormData(key){ 
         return(evt) => {   
@@ -57,6 +59,20 @@ function AddProduct() {
         console.log("kkk22: ",formData); //note
         setFomValidError(checkValidateInput(formData));
     },[formData]);
+
+    useEffect(() => {
+        setFormData({
+            ...formData,
+            images: selectedFiles
+        })
+    },[selectedFiles]);
+
+    useEffect(() => {
+        setFormData({
+            ...formData,
+            colors: selectedColors
+        })
+    },[selectedColors]);
 
    
     //img
@@ -98,34 +114,72 @@ function AddProduct() {
 
     //end img
 
+    //colors
+     const handleDeleteColorRender = (index) => {
+         const newS = selectedColors.slice();
+         newS.splice(index,1);
+         console.log("splice:",newS)
+         setSelectedColors(newS) ;
+     }
+ 
+     const renderSizes = (source) => {
+        console.log("source size: ", source);
+        return source.map((size, index) => {
+          return (
+            <div className="size-product-item" key={index}>
+                <div>Size: {size.name}</div>
+                <div>Number: {size.number}</div>
+                {/* <span className="icon-delete-size" onClick={()=>handleDeleteSizeRender(index)}> <i class='bx bx-x-circle icon-del-size'></i></span> */}
+            </div>
+            )
+        });
+    };
+
+     const renderColors = (source) => {
+         console.log("source colors: ", source);
+         return source.map((color, index) => {
+           return (
+             <div className="color-product-item-render" key={index}>
+                 <div className="color-review" style={{ backgroundColor: `${color.color}` }}></div>
+                 <div className="color-name">{color.name}</div>
+                 <div className="result-sizes">{renderSizes(color.sizes)}</div>  
+                 <span className="icon-delete-color" onClick={()=>handleDeleteColorRender(index)}> <i class='bx bx-x-circle icon-del-color'></i></span>
+             </div>
+             )
+         });
+     };
+ 
+     const handleAddNewColor = (newSColor) => {
+         const newS = selectedColors.slice();
+         newS.push(newSColor);
+         setSelectedColors(newS);
+     }
+     //end colors
+   
+
     function checkValidateInput(formD){
         let err = {}
+        if(!formD.sku){
+            err.sku= "SKU is required."
+        } 
         if(!formD.name){
             err.name= "Name is required."
-        } else if(formD.name.length < 3){
-            err.name = "Name must be more than 3 characters."
-        }
-        if(!formD.phone){
-            err.phone = "Phone is required."
-        } else if(formD.phone.length < 10){
-            err.phone = "Phone must be more than 10 characters."
-        }
-        if(!formD.password){
-            err.password = "Password is required."
-        } else if(formD.password.length < 6){
-            err.password = "Password must be more than 6 characters."
-        }
-        if(!formD.email){
-            err.email = "Email is required."
-        } else if(!/\S+@\S+\.\S+/.test(formD.email)){
-            err.email = "Email is invalid."
-        }
-        if(!formD.address){
-            err.address = "Address is required."
+        } 
+        if(!formD.description){
+            //err.description = "Description is required."
+        } 
+        if(formD.images.length <= 0){
+            err.images= "Please add image!"
+        } 
+        if(formD.colors.length <= 0){
+            err.colors= "Please add color!"
+        } 
+        if(formD.price < 0){
+            err.price = "Price >= 0."
         } 
         console.log("mmm",err)
 
-         if(err.name || err.phone || err.password || err.email || err.address) {
+         if(err.name || err.sku || err.description || err.images || err.colors || err.price) {
             setIsValidForm(false)
             //err.isValidForm = false;
             console.log("vao falsse")
@@ -140,59 +194,51 @@ function AddProduct() {
     }
 
     let dispatch = useDispatch();
-    const errResponse = useSelector((state) => state.users.errResponse);
-    const status = useSelector((state) => state.users.status);
-   const bb = "bb"
     function handleSaveProduct(evt){
         evt.preventDefault();
         console.log("check save onclick")
         if(!isValidForm) return;
         
-        console.log("check valid")
-        //dispatch(createUserAsync(formData));
+        console.log("check valid true formData:", formData)
 
         const data = new FormData();
+        data.append("sku", formData.sku);
         data.append("name", formData.name);
-        data.append("email", formData.email);
-        data.append("password", formData.password);
-        data.append("gender", formData.gender);
-        data.append("phone", formData.phone);
-        data.append("role", formData.role);
-        data.append("active", formData.active);
-        data.append("address", formData.address);
-        data.append("image", formData.image);
+        data.append("category", formData.category);
+        data.append("manufacture", formData.manufacture);
+        data.append("image-product", formData.images);
+        data.append("colors", formData.colors);
+        data.append("description", formData.description);
+        data.append("price", formData.price);
         axios.post("https://httpbin.org/anything", data).then(res => console.log(res)).catch(err => console.log(err));
-        
-        const cb = ()=>{
-            console.log("check call back")
-            console.log("errResponse cb",errResponse)
-            console.log("status cb",status)
-            console.log("bb",bb);
-        }
-        
-        dispatch(createUserAsync(data))
+        console.log("check valid true data: ", data)
+
+        // const datapost = {
+        //     "sku": formData.sku,
+        //     "name_product"
+        // }
+
+        dispatch(createProductAsync(formData))
         .then(res => {
             console.log("ok: ",res.ok )
             if (res.ok) {
               // Thành công
-                console.log("errResponse",errResponse)
-                console.log("status",status)
+            
                 setFormData({
+                    sku: '',
                     name: '',
-                    gender: gender_items && gender_items.length > 0 ? gender_items[0].name : '',
-                    phone: '',
-                    password: '',
-                    email: '',
-                    role: role_items && role_items.length > 0 ? role_items[0] : '',
-                    active: active_items && active_items.length > 0 ? active_items[0].key : '',
-                    address: '',
-                    image: ''
+                    category: categoryListName && categoryListName.length > 0 ? categoryListName[0].name : '',
+                    manufacture: manufactureListName && manufactureListName.length > 0 ? manufactureListName[0].name : '',
+                    images: [],
+                    colors: [],
+                    description: '',
+                    price: 0
                 })
                // setPreviewImgURL('');
                 
             } else {
               // Thất bại
-              console.log("status",status)
+              //console.log("status",status)
             }
         });
      }
@@ -242,13 +288,13 @@ function AddProduct() {
                                 <div className="form-group">
                                     <label className="label">Category</label>
                                     <select className="form-control"
-                                        value={formData.role} 
-                                        onChange={handleChangeFormData('role')} 
+                                        value={formData.category} 
+                                        onChange={handleChangeFormData('category')} 
                                     >
-                                        {role_items && role_items.length > 0 &&
-                                            role_items.map((item, index) => {
+                                        {isLoadingCate===false && categoryListName && categoryListName.length > 0 &&
+                                            categoryListName.map((item, index) => {
                                                 return(
-                                                    <option className="select-item" key={index}>{item}
+                                                    <option className="select-item" key={index}>{item.name}
                                                         {/* <span><i className={item.icon}></i></span>
                                                         <span></span> */}
                                                     </option>
@@ -262,13 +308,13 @@ function AddProduct() {
                                 <div className="form-group">
                                     <label className="label">Manufacture</label>
                                     <select className="form-control"
-                                        value={formData.active} 
-                                        onChange={handleChangeFormData('active')} 
-                                    >
-                                        {active_items && active_items.length > 0 &&
-                                            active_items.map((item, index) => {
+                                        value={formData.manufacture} 
+                                        onChange={handleChangeFormData('manufacture')} 
+                                    >  
+                                        {isLoadingManu===false && manufactureListName && manufactureListName.length > 0 &&
+                                            manufactureListName.map((item, index) => {
                                                 return(
-                                                    <option className="select-item" key={index}>{item.desc}
+                                                    <option className="select-item" key={index}>{item.name}
                                                         {/* <span><i className={item.icon}></i></span>
                                                         <span></span> */}
                                                     </option>
@@ -280,34 +326,39 @@ function AddProduct() {
                             </div>
                        </div>
 
-                       <div className="row">
+                        <div className="row">
                             <label className="label label-images" name="image">Images</label>
                             <input type="file" id="file" multiple hidden onChange={handleImageChange} />
                             <label htmlFor="file" className="label label-choose-img"><i class='bx bx-image-add icon-choose-img'></i>Add Image</label>
                             <div className="result">{renderPhotos(selectedFiles)}</div>
-                           
+                            { formValidError.images &&  <label className="label-error">{formValidError.images}</label> }
                         </div>
-
 
                         <div className="row">
-                            <label className="label" name="color">Colors</label>
-                            <div className="col-6">
-                                <button onClick={() => setShowColorPicker(showColorPicker => !showColorPicker)}>{showColorPicker ? 'Close color picker' : 'Pick a color'}</button>
+                            <label className="label label-color" name="color">Colors</label>
+                            {/* <label  className="label label-choose-img"><i class='bx bx-palette icon-choose-img'></i>Add Color</label> */}
+                            <div className="icon-add-colors-container" onClick={() => setShowAddColor(showAddColor => !showAddColor)}>
                                 {
-                                    showColorPicker && (
+                                    showAddColor ? 
+                                    <label  className="label label-choose-img"><i class='bx bx-palette icon-choose-img'></i>Close Add Color</label>  : 
+                                    <label  className="label label-choose-img"><i class='bx bx-palette icon-choose-img'></i>Add Color</label> 
+                                }
+                            </div>
+                            <div>
+                                {
+                                    showAddColor && (
                                     <div>
-                                        <ChromePicker 
-                                        color = {color}
-                                        onChange = {updateColor => setColor(updateColor.hex)}
-                                        />
-                                        <h2>you picked {color}</h2>
+                                    <AddProductColor
+                                        addColorOnclick={handleAddNewColor}
+                                        handleCancelOnclick={setShowAddColor}
+                                    />
                                     </div>)
                                 }
-                                <h1 style={{ backgroundColor: `${color}` }}>{color}</h1>
-                               
-                            </div>
+                                <div className="result-colors">{renderColors(selectedColors)}</div> 
+                                { formValidError.colors &&  <label className="label-error">{formValidError.colors}</label> } 
+                            </div>  
                         </div>
-
+                        
 
                         <div className="row">
                             <div className="col-12">
