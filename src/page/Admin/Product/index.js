@@ -9,7 +9,7 @@ import { getListProductsAsync, createProductAsync, deleteProductAsync } from '..
 import ToolTable from '../../../components/Admin/ToolTable/ToolTable';
 
 import AddProduct from '../../../components/Admin/AddNew/Product/AddProduct';
-import productList from '../../../assets/Admin/JsonData/productList.json'
+//import productList from '../../../assets/Admin/JsonData/productList.json'
 
 
 
@@ -17,11 +17,9 @@ export default function Product(){
 
     let dispatch = useDispatch();
 
-    // const productList = useSelector((state) => state.products.productList);
-    // const isLoading = useSelector(state => state.products.isLoading)
-    // console.log("productList",productList,"isloading", isLoading);
-
-    const isLoading = false;
+    const productList = useSelector((state) => state.products.productList);
+    const isLoading = useSelector(state => state.products.isLoading)
+    console.log("productList",productList,"isloading", isLoading);
 
     useEffect(() => {
         dispatch(getListProductsAsync());
@@ -61,11 +59,11 @@ export default function Product(){
             <td>{item.colors.length}</td>
             <td>{item.category}</td>
             <td>{item.manufacture}</td>
-            {console.log("image: ",process.env.REACT_APP_API_IMG,item.image)}
+            {console.log("image: ",process.env.REACT_APP_API_IMG,item.images)}
             <td>
                 <div className="img-product">
                     {
-                        item.image ? <img src = {process.env.REACT_APP_API_IMG + item.image}></img> :
+                        (item.images.length > 0) ? <img src = {process.env.REACT_APP_API_IMG + item.images[0]}></img> :
                         <img src = "/assets/images/avatarDefault.png"></img>
                     }     
                 </div>

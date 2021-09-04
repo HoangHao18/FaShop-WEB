@@ -18,6 +18,11 @@ function AddProduct() {
     useEffect(() => {
         dispatch(getListCategoriesNameAsync());
         dispatch(getListManufacturesNameAsync());
+        setFormData({
+            ...formData,
+            category: formData.category,
+            manufacture: formData.manufacture,
+        })
     }, []);
 
     //end gett category, manufacture
@@ -243,17 +248,19 @@ function AddProduct() {
             if (res.ok) {
               // Thành công
             
-                // setFormData({
-                //     sku: '',
-                //     name: '',
-                //     category: categoryListName && categoryListName.length > 0 ? categoryListName[0].name : '',
-                //     manufacture: manufactureListName && manufactureListName.length > 0 ? manufactureListName[0].name : '',
-                //     images: [],
-                //     colors: [],
-                //     description: '',
-                //     price: 0
-                // })
-               // setPreviewImgURL('');
+                setFormData({
+                    sku: '',
+                    name: '',
+                    category: categoryListName && categoryListName.length > 0 ? categoryListName[0].name : '',
+                    manufacture: manufactureListName && manufactureListName.length > 0 ? manufactureListName[0].name : '',
+                    images: [],
+                    colors: [],
+                    description: '',
+                    price: 0
+                })
+                setFileImgPost([]);
+                setSelectedFiles([])
+                setSelectedColors([])
                 
             } else {
               // Thất bại
