@@ -5,9 +5,21 @@ import MyTittle from '../../components/MyTitle'
 import SeparatorBar from '../../components/SeparatorBar'
 import ListBlogBox from '../../components/ListBlogBox'
 import FPSlider from '../../components/FPSlider'
-
+import React, { useEffect } from "react";
+import {useDispatch, useSelector} from 'react-redux';
+import { useHistory } from "react-router";
+import { getListProductsAsync } from "../../redux/actions/productAction";
 
 export default function Home(){
+    let dispatch = useDispatch();
+    const productList = useSelector((state) => state.products.productList);
+    const isLoading = useSelector((state) => state.products.isLoading)
+    console.log("productList",productList,"isloading", isLoading);
+
+    useEffect(() => {
+        dispatch(getListProductsAsync());
+        console.log("productList 0",productList,"isloading", isLoading);
+    }, []);
     return(
         <div className="">
             
@@ -19,11 +31,16 @@ export default function Home(){
 
                 <SeparatorBar/>
                 <MyTittle tittle="SẢN PHẨM MỚI NHẤT"/>  
-                <FPSlider/>
+                <FPSlider
+                    productList = {productList}
+                    isLoading = {isLoading}
+                />
+                
 
                 <SeparatorBar/>
-                <MyTittle tittle="SẢN PHẨM BÁN CHẠY"/>  
-                <FPSlider/>
+                {/* <MyTittle tittle="SẢN PHẨM BÁN CHẠY"/>  
+                <FPSlider/> */}
+                 <SeparatorBar/>
 
                 {/* <SeparatorBar/>
                 <MyTittle tittle="Our blog"/>  

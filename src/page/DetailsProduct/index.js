@@ -1,8 +1,36 @@
 import ImageProductSlider from "../../components/ImageProductSlider"
 import './style.scss'
 import Button from "../../components/MyButton"
+import { getSingleProductAsync } from "../../redux/actions/productAction";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router";
 
 export default function DetailsProduct(){
+
+    let dispatch = useDispatch();
+
+    let {id} = useParams();
+    console.log("param: ", useParams())
+    console.log("param id: ", id)
+    useEffect(() => {
+        dispatch(getSingleProductAsync(id));
+    }, []);
+
+    const product = useSelector((state) => state.products.productSingle);
+    console.log("product now mmmmmmmmmmm: ",product)
+
+    // useEffect(() => {
+    //   if(categoryEdit){
+    //       setFormData({
+    //           name: categoryEdit.name,
+    //           description: categoryEdit.description
+    //       })
+    //   }
+    // }, [categoryEdit]);
+
+
+
     return(
         <div className="details-product-container">
             <div className="container">

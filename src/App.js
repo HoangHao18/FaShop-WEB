@@ -62,7 +62,7 @@ function App() {
             <Route path="/cart" component={Cart}/>  
             <Route path="/blog" component={Blog}/> 
             <Route path="/buy" component={Buy}/>  
-            <Route path="/detailsProduct" component={DetailsProduct}/>
+            <Route path="/detailsProduct/:id" component={DetailsProduct}/>
 
             <ToastContainer
                 position="bottom-right"

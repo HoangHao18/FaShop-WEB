@@ -96,6 +96,26 @@ export const deleteProductAsync = (productId) => (dispatch) => {
 }
 
 
+//get single product
+const getSingleProduct = (productSingle) => ({
+    type: actionTypes.PRODUCT_GET_SINGLE,
+    payload: productSingle,
+
+})
+
+export const getSingleProductAsync = (id) => (dispatch) => {
+        ProductService.getSingleProduct(id)
+        .then(response => {
+            console.log("response: ", response);
+            console.log("response dt: ", response.data);
+            dispatch(getSingleProduct(response.data.data));
+            
+        })
+        .catch((error) => {
+            console.log("error: ",error);
+        });
+}
+
 
 
 

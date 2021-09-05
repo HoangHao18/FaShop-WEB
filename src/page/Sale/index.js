@@ -4,8 +4,30 @@ import SeparatorBar from "../../components/SeparatorBar";
 import "./style.scss";
 import FeaturedProduct from "../../components/FeaturedProduct";
 import { SearchOutline } from 'react-ionicons'
+import React, { useEffect } from "react";
+import {useDispatch, useSelector} from 'react-redux';
+import { useHistory } from "react-router";
+import { getListProductsAsync } from "../../redux/actions/productAction";
+import NumberFormat from 'react-number-format';
+import { getListCategoriesNameAsync } from "../../redux/actions/categoryAction";
+
 
 export  default function About(){
+    let history = useHistory();
+    let dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getListProductsAsync());
+        dispatch(getListCategoriesNameAsync())
+    }, []);
+   
+    const productList = useSelector((state) => state.products.productList);
+    const isLoading = useSelector(state => state.products.isLoading)
+    const categoryListName = useSelector((state) => state.categories.categoryListName);
+    const handleOpenDetailProduct = (idP) => {
+        console.log("mmmmmmmmmmmmmmmmmmmmmmmmmm",idP)
+        history.push(`/detailsProduct/${idP}`)
+    }
+
     return(
         <div className="sale-page-container">
             <HeaderBar/>
@@ -18,11 +40,13 @@ export  default function About(){
                             <h3 className="title">Danh mục</h3>
                             <ul className="list-categories">
                                 <li>Tất cả</li>
-                                <li>Hoodie</li>
-                                <li>Len</li>
-                                <li>Váy</li>
-                                <li>Sơ Mi</li>
-                                <li>Jean</li>
+                                {
+                                    categoryListName && categoryListName.length > 0 ? (
+                                        categoryListName.map((item, index) => 
+                                           <li key={index}>{item.name}</li>
+                                        )
+                                   ) : '' 
+                                }
                             </ul>
                         </div>
 
@@ -36,56 +60,29 @@ export  default function About(){
                                 width="15px"
                                 />
                             </button>
-                        </div>
-                        
+                        </div>  
                     </div>
+                  
                     <div className="col-9 list-product">
-                        <div className="col-4">
-                            <FeaturedProduct image="/assets/images/ho08.png"
-                                name = "Hoodie Bear Grey"
-                                price = "380.000"/>
-                        </div>
-                        <div className="col-4">
-                            <FeaturedProduct image="/assets/images/classic02.png"
-                                name = "Đầm Maxi Trắng"
-                                price = "420.000"/>
-                        </div>
-                        <div className="col-4">
-                            <FeaturedProduct image="/assets/images/chanvayC.jpg"
-                                name = "Chân váy Caro"
-                                price = "480.000"/>
-                        </div>
-                        <div className="col-4">
-                            <FeaturedProduct image="/assets/images/vay01.jpg"
-                                name = "Yếm Maxi cổ V đen"
-                                price = "655.000"/>
-                        </div>
-                        <div className="col-4">
-                            <FeaturedProduct image="/assets/images/jean11.jpg"
-                                name = "Quần Jean ống xuông trắng"
-                                price = "480.000"/>
-                        </div>
-                        <div className="col-4">
-                            <FeaturedProduct image="/assets/images/len2.png"
-                                name = "Áo Cadigan Len Xanh"
-                                price = "495.000"/>
-                        </div>
-                        <div className="col-4">
-                            <FeaturedProduct image="/assets/images/hoodieC.png" 
-                                name = "Hoodie"
-                                price = "495.000"/>
-                        </div>
-                        <div className="col-4" >
-                            <FeaturedProduct image="/assets/images/hoodieC.png"
-                                name = "Hoodie"
-                                price = "495.000"/>
-                        </div>
-                        <div className="col-4" >
-                            <FeaturedProduct image="/assets/images/hoodieC.png"
-                                name = "Hoodie"
-                                price = "495.000"/>
-                        </div>
-                        
+                        {
+                            isLoading ? <div>Loading...</div> :
+                            (
+                                productList && productList.length > 0 ? (
+                                       
+                                    productList.map((item, index) => 
+                                        <div className="col-4">
+                                            <FeaturedProduct image={process.env.REACT_APP_API_IMG + item.images[0]}
+                                                name = {item.name}
+                                                price = {item.price}
+                                                id = {item.id}
+                                                handleOnclickProduct = {(idP) => handleOpenDetailProduct(idP)}
+                                                />
+                                        </div> 
+                                    )
+                                    
+                               ) : <div>Not Have Product</div>
+                            )                           
+                        }
 
                     </div>
 
