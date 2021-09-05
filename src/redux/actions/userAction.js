@@ -20,6 +20,24 @@ export const getListUsersAsync = () => (dispatch) => {
         });
 }
 
+//get single user
+const getSignUser = (user) => ({
+    type: actionTypes.USER_GET_SINGLE,
+    payload: user,
+
+})
+
+export const getSignUserAsync = (id) => (dispatch) => {
+        UserService.getSingleUser(id)
+        .then(response => {
+            console.log("response: ", response);
+            dispatch(getSignUser(response.data));
+        })
+        .catch((error) => {
+            console.log("error: ",error);
+        });
+}
+
 //create user
 const createUser = () => ({
     type: actionTypes.USER_CREATE_NEW,

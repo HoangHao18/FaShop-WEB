@@ -25,6 +25,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { loginCheckLocalAsync } from './redux/actions/authAction';
 
 //import { actGetCurrentUserInforAsync } from './Store/currentuser/actions';
 //import { actSetHeaderGetInforUser } from './Store/user/actions';
@@ -32,27 +33,24 @@ import { useEffect } from 'react';
 
 function App() {
 
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   const ClientId = localStorage.getItem('client_id');
-  //   const token = localStorage.getItem('access_token');
-  //   const userID = localStorage.getItem('user_id');
-  // },[])
-
-  // const data = useSelector(state => state.users.data);
-  // const requesting = useSelector(state => state.users.requesting);
-  // console.log(data, requesting);
-  // console.log("mmmm", data)
-
-  // const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(loadUserList());
-  // }, []);
+    let dispatch = useDispatch();
+    const isLogin = useSelector((state) => state.auth.isLogin);
+    const userCurrent = useSelector((state) => state.auth.userCurrent);
+    console.log("gggggg", userCurrent)
+    useEffect(()=>{
+        if(localStorage.getItem("isLogin") === "true"){
+            dispatch(loginCheckLocalAsync(localStorage.getItem("userCurrentId")))
+        }
+    },[])
   
   return (
     <Router>
       <Switch>
-        <Route path="/admin" component={AdminHome}/>
+        {
+          (userCurrent.role === "admin" || userCurrent.role === "Admin") && isLogin === true ?
+          <Route path="/admin" component={AdminHome}/> : ''
+        }
+       
         <div className="App">
           <HeaderBar/>
             <Route exact path="/" component={Home}/>

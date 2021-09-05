@@ -8,6 +8,7 @@ import apiClient from "../api/apiClient";
 
 export const UserService = {
     getAllUsers: () => apiClient().get("user/all"),
+    getSingleUser: (userId) =>apiClient().get(`/user/${userId}`),
     createUser: (data) => apiClient().post("user/", data),
     deleteUser: (userId) => apiClient().delete(`/user/${userId}`),
 }

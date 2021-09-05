@@ -18,6 +18,12 @@ function userReducers(state = initialState, action) {
                 userList: action.payload,
                 isLoading: false,
             }
+        case actionTypes.USER_GET_SINGLE:
+            return{
+                ...state,
+                userSingle: action.payload,
+                isLoading: false,
+            }
         case actionTypes.USER_DELETE_BY_ID:
             return{
                 ...state,

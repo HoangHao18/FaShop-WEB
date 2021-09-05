@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import './style.scss'
-import { logout } from '../../redux/actions/authAction';
+import { loginCheckLocalAsync, logout } from '../../redux/actions/authAction';
+import { useEffect } from 'react';
 
 
 
@@ -12,15 +13,26 @@ export default function HeaderBar(){
     const userCurrent = useSelector(state => state.auth.userCurrent); 
     let dispatch = useDispatch();
 
-  
+    //kt render
+    useEffect(()=>{
+        if(localStorage.getItem("isLogin") === "true"){
+            dispatch(loginCheckLocalAsync(localStorage.getItem("userCurrentId")))
+        }
+    },[])
+
+
+    useEffect(()=>{
+        console.log("curren user nheeeeeeeeee2: ",userCurrent,isLogin)
+    },[userCurrent])
     const handleLogOut = () => {
-        // localStorage.removeItem("userCurrent");
-        // localStorage.setItem("isLogin",false)
+        dispatch(logout());
+        console.log("curren user nheeeeeeeeee: ",userCurrent,isLogin)
+        window.location.href = "/"
+
+        localStorage.removeItem("userCurrentId", userCurrent.id);
+        localStorage.setItem("isLogin",false)
         //history.push("/");
 
-        dispatch(logout());
-        console.log("curren user nheeeeeeeeee: ",userCurrent)
-        //window.location.href = "/"
     }     
     return(
         <div className="header-bar row">
@@ -41,7 +53,7 @@ export default function HeaderBar(){
             <Link to="/cart"><span className="icon-cart-2"><i class='bx bx-shopping-bag icon-2'></i></span></Link>   
            
                 {
-                    isLogin && userCurrent  ?
+                    isLogin && userCurrent.name !==" "  ?
                         <div className="info-user-current"> 
                             <span className="icon-logout-2" onClick={()=>handleLogOut()}><i class='bx bx-log-out-circle icon-2' ></i></span>  
                             {

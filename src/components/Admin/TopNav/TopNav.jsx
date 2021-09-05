@@ -7,7 +7,7 @@ import user_image from '../../../assets/Admin/images/cat.png'
 import user_menu from '../../../assets/Admin/JsonData/user_menus.json'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { logout } from '../../../redux/actions/authAction'
+import { loginCheckLocalAsync, logout } from '../../../redux/actions/authAction'
 
 //console.log("dday nheeeeeeeee: ",curr_user.name)
 // const renderUserToggle = (user) =>(
@@ -48,6 +48,12 @@ const TopNav = () => {
     // }
 
     const userCurrent = useSelector((state) => state.auth.userCurrent)
+     //kt render
+     useEffect(()=>{
+        if(localStorage.getItem("isLogin") === "true"){
+            dispatch(loginCheckLocalAsync(localStorage.getItem("userCurrentId")))
+        }
+    },[])
     // const curr_user =  userCurrent ?  userCurrent : {
     //     name: "",
     //     image: "",
@@ -58,13 +64,14 @@ const TopNav = () => {
     let history = useHistory();
     let dispatch = useDispatch();
     const handleLogOut = () => {
-        // localStorage.removeItem("userCurrent");
-        // localStorage.setItem("isLogin",false)
-        //history.push("/");
-
         dispatch(logout());
         // console.log("curren user nheeeeeeeeee: ",userCurrent)
         window.location.href = "/"
+
+        localStorage.removeItem("userCurrentId");
+        localStorage.setItem("isLogin",false)
+        //history.push("/");
+
     }
     
     return (
