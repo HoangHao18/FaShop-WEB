@@ -73,7 +73,8 @@ export default function FPSlider({isLoading, productList}){
                                 <div key={index}>
                                     <FeaturedProduct image={process.env.REACT_APP_API_IMG + item.images[0]}
                                         name = {item.name}
-                                        price = {item.price}/>
+                                        price = {item.price}
+                                        id = {item.id}/>
                                 </div> 
                             )
                             

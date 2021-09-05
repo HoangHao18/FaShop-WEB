@@ -23,10 +23,10 @@ export  default function About(){
     const productList = useSelector((state) => state.products.productList);
     const isLoading = useSelector(state => state.products.isLoading)
     const categoryListName = useSelector((state) => state.categories.categoryListName);
-    const handleOpenDetailProduct = (idP) => {
-        console.log("mmmmmmmmmmmmmmmmmmmmmmmmmm",idP)
-        history.push(`/detailsProduct/${idP}`)
-    }
+    // const handleOpenDetailProduct = (idP) => {
+    //     console.log("mmmmmmmmmmmmmmmmmmmmmmmmmm",idP)
+    //     history.push(`/detailsProduct/${idP}`)
+    // }
 
     return(
         <div className="sale-page-container">
@@ -75,7 +75,7 @@ export  default function About(){
                                                 name = {item.name}
                                                 price = {item.price}
                                                 id = {item.id}
-                                                handleOnclickProduct = {(idP) => handleOpenDetailProduct(idP)}
+                                                // handleOnclickProduct = {(idP) => handleOpenDetailProduct(idP)}
                                                 />
                                         </div> 
                                     )
