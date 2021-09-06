@@ -113,6 +113,27 @@ export const deleteUserAsync = (userId) => (dispatch) => {
         });
 }
 
+///save cart
+const saveCart = () => ({
+    type: actionTypes.USER_SAVE_CART,
+})
+
+export const saveCartAsync = ({ id, cart }) => (dispatch) => {
+        UserService.saveCart({ id, cart })
+        .then(response => {
+            console.log("response: save cart", response);
+            dispatch(saveCart());
+            //dispatch(getListCategoriesAsync());
+            //toast.success("EDIT SUCCESS");
+        })
+        .catch((error) => {
+            console.log("error.response: save cart", error.response);
+            // const errorList = Object.values(error.response.data.message);
+            // errorList.map((item) => {
+            //     toast.error(item);
+            // })
+        });
+}
 
 
 

@@ -11,6 +11,7 @@ export const UserService = {
     getSingleUser: (userId) =>apiClient().get(`/user/${userId}`),
     createUser: (data) => apiClient().post("user/", data),
     deleteUser: (userId) => apiClient().delete(`/user/${userId}`),
+    saveCart: (data)=> apiClient().patch("user/savecart",data)
 }
 
 // login: ({

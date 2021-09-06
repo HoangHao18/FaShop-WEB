@@ -29,6 +29,11 @@ function userReducers(state = initialState, action) {
                 ...state,
                 isLoading: false,
             }
+        case actionTypes.USER_SAVE_CART:
+            return{
+                ...state,
+                isLoading: false,
+            }
         case actionTypes.USER_CREATE_NEW:
             return{
                 ...state,

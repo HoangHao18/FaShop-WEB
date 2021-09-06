@@ -20,6 +20,12 @@ export const loginAsync = (data) => {
                 toast.success("Đăng nhập thành công!");
                 localStorage.setItem("userCurrentId",response.data.data.id)
                 localStorage.setItem("isLogin",true)
+                if(response.data.data.cart){
+                    localStorage.setItem("cart",response.data.data.cart)
+                }else{
+                    localStorage.setItem("cart",JSON.stringify([]))
+                }
+                
                 return {
                     ok: true,
                     userCurrent: response.data.data
@@ -75,6 +81,7 @@ export const loginCheckLocalAsync = (idInLocal) => {
                 //toast.success("Đăng nhập thành công!");
                 localStorage.setItem("userCurrentId",response.data.data.id)
                 localStorage.setItem("isLogin",true)
+                // localStorage.setItem("cart",JSON.stringify(response.data.data.cart))
                 return {
                     ok: true,
                     userCurrent: response.data.data

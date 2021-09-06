@@ -13,7 +13,7 @@ export default function FeaturedProduct({image="/assets/images/tp_watch.png", na
         <div className="featured-product" onClick={() => handleOpenDetailProduct(id)}>
             <div className="fp-image">
                 <img src={image}></img>
-                <div className="btn-add-to-cart"><MyButton nameButton="Thêm vào giỏ hàng" isRadios={true}/></div>
+                <div className="btn-add-to-cart"><MyButton nameButton="chi tiết sản phẩm" isRadios={true}/></div>
                 
             </div>
             <div className="fp-info">

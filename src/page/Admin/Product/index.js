@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom'
 import { getListProductsAsync, createProductAsync, deleteProductAsync } from '../../../redux/actions/productAction';
 import ToolTable from '../../../components/Admin/ToolTable/ToolTable';
-
+import NumberFormat from 'react-number-format';
 import AddProduct from '../../../components/Admin/AddNew/Product/AddProduct';
 //import productList from '../../../assets/Admin/JsonData/productList.json'
 
@@ -19,7 +19,7 @@ export default function Product(){
 
     const productList = useSelector((state) => state.products.productList);
     const isLoading = useSelector(state => state.products.isLoading)
-    console.log("productList",productList,"isloading", isLoading);
+    console.log("productList product page",productList);
 
     useEffect(() => {
         dispatch(getListProductsAsync());
@@ -55,8 +55,8 @@ export default function Product(){
             <td>{currIndexStart + index + 1}</td>
             <td>{item.sku}</td>
             <td>{item.name}</td>
-            <td>{item.price} VND</td>
-            <td>{item.colors.length}</td>
+            <td><NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} /> VND</td>
+            <td>{JSON.parse(item.colors).length}</td>
             <td>{item.category}</td>
             <td>{item.manufacture}</td>
             {console.log("image: ",process.env.REACT_APP_API_IMG,item.images)}

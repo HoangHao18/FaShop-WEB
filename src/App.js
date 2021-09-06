@@ -36,7 +36,7 @@ function App() {
     let dispatch = useDispatch();
     const isLogin = useSelector((state) => state.auth.isLogin);
     const userCurrent = useSelector((state) => state.auth.userCurrent);
-    console.log("gggggg", userCurrent)
+    //console.log("gggggg", userCurrent)
     useEffect(()=>{
         if(localStorage.getItem("isLogin") === "true"){
             dispatch(loginCheckLocalAsync(localStorage.getItem("userCurrentId")))

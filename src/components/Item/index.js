@@ -2,7 +2,7 @@ import './style.scss'
 import MyButton from '../MyButton'
 
 
-export default function Item({image,name,isRadios=false, isInfo=false,children,linkTo="/"}){
+export default function Item({image,name,isRadios=false, isInfo=false,children,linkTo="/sale"}){
     // if(isInfo){
     //     return(
     //         <div className="type-product">

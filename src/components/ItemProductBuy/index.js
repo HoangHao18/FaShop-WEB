@@ -1,12 +1,15 @@
 import Button from "../MyButton";
 import "./style.scss"
+import NumberFormat from 'react-number-format';
 
 export default function ItemProductbuy({
     img = "/assets/images/slider02.jpg",
     name = "Mug Adventure",
     price = "16.00",
     quantity = "1",
-    priceTotal = "16.00"
+    priceTotal = "16.00",
+    colorchoose,
+    sizechoose
 
 }){
     return(
@@ -19,21 +22,19 @@ export default function ItemProductbuy({
                 </div>
 
                 <div className="col-3 name-col">
-                    <h3>{name}</h3>
+                    <h3>{name} <br/><span className="color-size">color: {colorchoose}, size: {sizechoose}</span></h3>
                 </div>
 
                 <div className="col-2 price-col">
-                    <h3>{price} VND</h3>
+                    <h3><NumberFormat value={price} displayType={'text'} thousandSeparator={true} /> VND</h3>
                 </div>
 
                 <div className="col-2 quantity-col">
-                    <h3>
-                       1
-                    </h3>
+                    <h3>{quantity}</h3>
                 </div>
 
                 <div className="col-2 price-total-col">
-                    <h3>{priceTotal} VND</h3>
+                    <h3><NumberFormat value={priceTotal} displayType={'text'} thousandSeparator={true} /> VND</h3>
                 </div>
 
                 {/* <div className="col-1 button-col">

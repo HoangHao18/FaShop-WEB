@@ -88,10 +88,17 @@ function AddProduct() {
         console.log("splice:",newI)
         setSelectedFiles(newI) ;
 
-        const newImgPost = fileImgPost.slice();
-        newImgPost.splice(index,1);
+    //   console.log("fileImgPost nnnnnnnnnn",fileImgPost)
+    //   console.log("fileImgPost nnnnnnnnnn FileList",fileImgPost.File)
+        // const newImgPost = fileImgPost.slice(); //not working because fileImgPost is a object not a arrray
+        // newImgPost.splice(index,1);
+        // console.log("splice newImgPost:",newImgPost)
+        // setFileImgPost(newImgPost) ;  
+
+        let newImgPost = {...fileImgPost};
+        delete newImgPost[index]
         console.log("splice newImgPost:",newImgPost)
-        setFileImgPost(newImgPost) ;
+        setFileImgPost(newImgPost) ; 
     }
 
 
@@ -102,7 +109,7 @@ function AddProduct() {
             URL.createObjectURL(file)
         );
     
-           console.log("filesArray: ", filesArray);
+           console.log("filesArray: ", Array.from(e.target.files));
            setFileImgPost(e.target.files)
     
           setSelectedFiles((prevImages) => prevImages.concat(filesArray));

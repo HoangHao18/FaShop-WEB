@@ -26,10 +26,10 @@ const settings = {
     // dots: true,
     infinite: true,  
     slidesToShow: 4,
-    slidesToScroll: 2,
-    //autoplay: true,
-    speed: 500,
-    // autoplaySpeed: 3000,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 2000,
+     autoplaySpeed: 4000,
     //fade: true,
     // cssEase: "linear",
     nextArrow: <ArrowNext/>,
@@ -82,7 +82,7 @@ export default function FPSlider({isLoading, productList}){
                     )                           
                 }
            
-            <div>
+            {/* <div>
                 <FeaturedProduct image="/assets/images/ho08.png"
                     name = "Hoodie Bear Grey"
                     price = "380.000"/>
@@ -96,7 +96,7 @@ export default function FPSlider({isLoading, productList}){
                 <FeaturedProduct image="/assets/images/chanvayC.jpg"
                     name = "Chân váy Caro"
                     price = "480.000"/>
-            </div>
+            </div> */}
              {/*<div>
                 <FeaturedProduct image="/assets/images/sw08.png"
                     name = "Sweater Bubble White"

@@ -103,17 +103,30 @@ const getSingleProduct = (productSingle) => ({
 
 })
 
-export const getSingleProductAsync = (id) => (dispatch) => {
-        ProductService.getSingleProduct(id)
-        .then(response => {
-            console.log("response: ", response);
-            console.log("response dt: ", response.data);
-            dispatch(getSingleProduct(response.data.data));
-            
-        })
-        .catch((error) => {
+export const getSingleProductAsync = (id) => {
+    return async function(dispatch){
+        try{
+            let response = (await ProductService.getSingleProduct(id))
+            if(response.data.success == true || response.status === 200 || response.status === 201){
+                dispatch(getSingleProduct(response.data.data));
+                //toast.success("CREATE SUCCESS");
+              
+                return {
+                    ok: true,
+                    productCurrent: response.data.data
+                }
+            }
+        }catch(error){
             console.log("error: ",error);
-        });
+            return{
+                ok: false
+            }
+        };
+    }
+        
+        
+      
+       
 }
 
 

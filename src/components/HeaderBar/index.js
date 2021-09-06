@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import './style.scss'
 import { loginCheckLocalAsync, logout } from '../../redux/actions/authAction';
 import { useEffect } from 'react';
+import { saveCartAsync } from '../../redux/actions/userAction';
 
 
 
@@ -25,12 +26,15 @@ export default function HeaderBar(){
         console.log("curren user nheeeeeeeeee2: ",userCurrent,isLogin)
     },[userCurrent])
     const handleLogOut = () => {
+        dispatch(saveCartAsync({id: userCurrent.id,cart: localStorage.getItem("cart")}))
         dispatch(logout());
         console.log("curren user nheeeeeeeeee: ",userCurrent,isLogin)
         window.location.href = "/"
-
+        
+        console.log("localStorage.getItem cart",localStorage.getItem("cart"))
         localStorage.removeItem("userCurrentId", userCurrent.id);
         localStorage.setItem("isLogin",false)
+        localStorage.removeItem("cart");
         //history.push("/");
 
     }     
@@ -46,6 +50,7 @@ export default function HeaderBar(){
                     <li><Link to="/blog">Blog</Link></li>
                     <li><Link to="/about">About</Link></li>
                     <li><Link to="/contact">Contact</Link></li>
+                    <li><Link to="/contact">New</Link></li>
                 </ul>
             </div>
 

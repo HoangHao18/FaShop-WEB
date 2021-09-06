@@ -112,6 +112,12 @@
         }
     }
 
-    
+    input{
+        &:hover, &:focus, &:active{
+            outline: none;
+            box-shadow: none;
+            border-bottom: #3f836c 2px solid;
+        }
+    }
    
 }
