@@ -4,24 +4,22 @@ import Table from '../../../components/Admin/Table/Table'
 import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom'
-import { getListManufacturesAsync, deleteManufactureAsync } from '../../../redux/actions/manufactureAction';
+import { getListOrdersAsync } from '../../../redux/actions/orderAction';
 import ToolTable from '../../../components/Admin/ToolTable/ToolTable';
-
-import AddCategory from '../../../components/Admin/AddNew/Category/AddCategory';
-import ordersList from '../../../assets/Admin/JsonData/ordersList.json'
+import NumberFormat from 'react-number-format';
+// import AddCategory from '../../../components/Admin/AddNew/Category/AddCategory';
+// import ordersList from '../../../assets/Admin/JsonData/ordersList.json'
 
 export default function Order(){
 
     let dispatch = useDispatch();
 
-    // const manufacturesList = useSelector((state) => state.manufactures.manufactureList);
-    // const isLoading = useSelector(state => state.manufactures.isLoading)
+    const ordersList = useSelector((state) => state.orders.orderList);
+    const isLoading = useSelector(state => state.orders.isLoading)
     // console.log("categoryList",manufacturesList,"isloading", isLoading);
-    
-    const isLoading = false;
 
     useEffect(() => {
-        //dispatch(getListManufacturesAsync());
+        dispatch(getListOrdersAsync());
     }, []);
 
     let history = useHistory();
@@ -31,7 +29,7 @@ export default function Order(){
         }
     }
     const handleEdit = (orderId) => {
-        //history.push(`/admin/orders/editorder/${orderId}`);
+        history.push(`/admin/orders/editorder/${orderId}`);
     }
 
 
@@ -39,13 +37,13 @@ export default function Order(){
 
     const userTableHead = [
         // <th style={{width: "10px"}}>ID</th>,
-        <th style={{width: "10%"}}>Code</th>,
-        <th style={{width: "20%"}}>Guest</th>,
+        <th style={{width: "14%"}}>Code</th>,
+        <th style={{width: "16%"}}>Guest</th>,
         <th style={{width: "15%"}}>Ship</th>,
         <th style={{width: "15%"}}>Total Price</th>,
-        <th style={{width: "10%"}}>Status</th>,
+        <th style={{width: "12%"}}>Status</th>,
         <th style={{width: "15%"}}>Date Order</th>,
-        <th style={{width: "10%"}}>Action</th>,
+        <th style={{width: "8%"}}>Action</th>,
     ] 
     const renderHead = (item, index) => item;
     
@@ -54,14 +52,14 @@ export default function Order(){
             <td>{currIndexStart + index + 1}</td>
             {/* <td>{item._id}</td> */}
             <td>{item.code}</td>
-            <td>{item.guest}</td>
-            <td>{item.ship} VND</td>
-            <td>{item.totalprice} VND</td>
+            <td>{item.name}</td>
+            <td><NumberFormat value={item.ship}  displayType={'text'} thousandSeparator={true} /> VND</td>
+            <td><NumberFormat value={item.price_total}  displayType={'text'} thousandSeparator={true} /> VND</td>
             <td><span className="done">{item.status}</span></td>
-            <td>{item.dateorder}</td>
+            <td>{(new Date(item.createdAt)).toISOString().slice(0,10)}</td>
             <td>
                 <span onClick={()=>handleEdit(item._id)}> <i class='bx bx-edit-alt iconEdit'> </i></span>
-                <span onClick={()=>handleDelete(item._id)}> <i class='bx bx-trash iconDelete'></i></span>
+                {/* <span onClick={()=>handleDelete(item._id)}> <i class='bx bx-trash iconDelete'></i></span> */}
             </td>
         </tr>
     )
@@ -69,7 +67,7 @@ export default function Order(){
     return(
         <div className="order-admin-page">
             <h2 className="page-header">Order</h2>
-            {/* <AddCategory/> */}
+        
             <ToolTable 
                 // linkAdd = "/admin/manufactures/addManufacture"
             />

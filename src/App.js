@@ -26,6 +26,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { loginCheckLocalAsync } from './redux/actions/authAction';
+import GuestOrders from './page/Guest/GuestOrders';
+import GuestOrderDetail from './page/Guest/GuestOrderDetail/GuestOrderDetail';
 
 //import { actGetCurrentUserInforAsync } from './Store/currentuser/actions';
 //import { actSetHeaderGetInforUser } from './Store/user/actions';
@@ -63,7 +65,13 @@ function App() {
             <Route path="/blog" component={Blog}/> 
             <Route path="/buy" component={Buy}/>  
             <Route path="/detailsProduct/:id" component={DetailsProduct}/>
-
+           
+            {
+              isLogin ? <Route path="/orders/:id" component={GuestOrders}/> : ''
+            }
+              {
+              isLogin ? <Route path="/order/:id" component={GuestOrderDetail}/> : ''
+            }
             <ToastContainer
                 position="bottom-right"
                 autoClose={1500}

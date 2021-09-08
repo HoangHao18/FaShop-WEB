@@ -39,6 +39,7 @@
             .btn-dat-hang{
                 margin-top: 40px;
                 text-align: right;
+                justify-content: end;
             }
             .title-cr{
                 text-align: left;
@@ -118,6 +119,30 @@
             box-shadow: none;
             border-bottom: #3f836c 2px solid;
         }
+    }
+    .button-dathang{
+        padding-top: 12px;
+        background-color: white;
+        color: black;
+        text-transform: uppercase;
+        width: 210px;
+        height: 46px;
+        border: none;
+        text-align: center;
+        box-shadow: 2px 2px 3px #807d7d;
+        opacity: 0.8; 
+        cursor: pointer;
+        &:hover{
+            background-color: rgb(211, 76, 76);
+            color: white;
+            opacity: 1;
+            transition: all 0.6s;
+        }
+    }
+    .label-error{
+        padding-top: 3px;
+        font-size: 12px;
+        color: #d72929;
     }
    
 }

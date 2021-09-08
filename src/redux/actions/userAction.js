@@ -31,7 +31,7 @@ export const getSignUserAsync = (id) => (dispatch) => {
         UserService.getSingleUser(id)
         .then(response => {
             console.log("response: ", response);
-            dispatch(getSignUser(response.data));
+            dispatch(getSignUser(response.data.data));
         })
         .catch((error) => {
             console.log("error: ",error);

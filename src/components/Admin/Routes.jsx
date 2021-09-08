@@ -18,6 +18,7 @@ import EditProduct from './Edit/Product/EditProduct';
 import Order from '../../page/Admin/Order';
 
 import Home from '../../page/Home';
+import EditOrder from './Edit/Order/EditOrder';
 
 export default function Routes(){
     return(
@@ -40,7 +41,7 @@ export default function Routes(){
             <Route path='/admin/manufactures/editManufacture/:id' component={EditManufacture}/>
 
             <Route exact path='/admin/orders' component={Order}/>
-       
+            <Route path='/admin/orders/editOrder/:id' component={EditOrder}/>
         </Switch>
     )
 }

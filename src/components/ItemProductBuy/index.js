@@ -2,7 +2,7 @@ import Button from "../MyButton";
 import "./style.scss"
 import NumberFormat from 'react-number-format';
 
-export default function ItemProductbuy({
+export default function ItemProductBuy({
     img = "/assets/images/slider02.jpg",
     name = "Mug Adventure",
     price = "16.00",

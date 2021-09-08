@@ -41,7 +41,7 @@ export default function DetailsProduct(){
     console.log("colorsObject: ", colorsObject);
     const [colorUserChoosed, setColorUserChoosed] = useState({color: "", sizes: []});
     const [sizeUserChoosed, setSizeUserChoosed] = useState({name: "", number: 0})
-    const [numberUserChoosed, setNumberUserChoosed] = useState(1);
+    const [numberUserChoosed, setNumberUserChoosed] = useState(0);
 
     let {id} = useParams();
     useEffect(() => {
@@ -60,7 +60,7 @@ export default function DetailsProduct(){
 
     const handleAddCart = ()=>{
         //console.log("user choose: ", colorUserChoosed, sizeUserChoosed,numberUserChoosed);
-
+        if(numberUserChoosed == 0 ) return;
         const productAddCart = {
             ...product,
             colorChoosed: colorUserChoosed,
@@ -161,9 +161,9 @@ export default function DetailsProduct(){
                         <div className="quantity-dp">
                             <p>Số lượng</p>
                             <div className="quantity-btn-dp">
-                                <span onClick={()=>{setNumberUserChoosed( numberUserChoosed === 1 ? 1 : numberUserChoosed - 1)}}><i class='bx bx-minus icon-minus' ></i></span>
+                                <span onClick={()=>{setNumberUserChoosed( numberUserChoosed === 0 ? 0 : numberUserChoosed - 1)}}><i class='bx bx-minus icon-minus' ></i></span>
                                 <span className="quantity">{numberUserChoosed}</span>
-                                <span onClick={()=>{setNumberUserChoosed(numberUserChoosed + 1)}}><i class='bx bx-plus icon-plus'></i></span>
+                                <span onClick={()=>{setNumberUserChoosed(numberUserChoosed == sizeUserChoosed.number ? numberUserChoosed : numberUserChoosed + 1)}}><i class='bx bx-plus icon-plus'></i></span>
                             </div>
                         </div>
                         

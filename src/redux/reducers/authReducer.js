@@ -27,13 +27,13 @@ function authReducers(state = initialState, action) {
                 isLoading: false,
             }
            
-        case actionTypes. AUTH_LOGIN_CHECK_LOCAL:
-        return{
-            ...state,
-            userCurrent: action.payload,
-            isLogin: true,
-            isLoading: false,
-        }
+        case actionTypes.AUTH_LOGIN_CHECK_LOCAL:
+            return{
+                ...state,
+                userCurrent: action.payload,
+                isLogin: true,
+                isLoading: false,
+            }
         case actionTypes.AUTH_REGISTER:
             return{
                 ...state,

@@ -4,6 +4,7 @@ import * as actionTypes from '../constants/productConstant';
 const initialState = {
     productList: null,
     productSingle: null,
+    productFilterByCategory: null,
     isLoading: true,
     errorMessage: null,
     errResponse: null,
@@ -51,6 +52,12 @@ function productReducers(state = initialState, action) {
         case actionTypes.PRODUCT_EDIT_BY_ID:
             return{
                 ...state,
+                isLoading: false,
+            }
+        case actionTypes.PRODUCT_GET_BY_CATEGORY:
+            return{
+                ...state,
+                productFilterByCategory: action.payload,
                 isLoading: false,
             }
         default:

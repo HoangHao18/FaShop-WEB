@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 export default function FeaturedProduct({image="/assets/images/tp_watch.png", name="Watch black", price="165.90",id}){
     let history = useHistory();
     const handleOpenDetailProduct = (idP) => {
-        console.log("mmmmmmmmmmmmmmmmmmmmmmmmmm",idP)
+        //console.log("mmmmmmmmmmmmmmmmmmmmmmmmmm",idP)
         history.push(`/detailsProduct/${idP}`)
     }
     return (

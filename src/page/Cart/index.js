@@ -116,8 +116,8 @@ import NumberFormat from 'react-number-format';
 export  default function Cart(){
     let listProductCart = JSON.parse(localStorage.getItem("cart"));
     const [totalPriceCart, setTotalPriceCart] = useState(calcTotalPriceCart(listProductCart));
-    //const [quantityProductCart, setQuantityProductCart] = useState(listProductCart.numberChoosed)
     const [listProductCartA, setListProductCartA] = useState(listProductCart)
+    
     function calcTotalPriceCart(list){
         let t = 0;
         list.map(function(item,index){

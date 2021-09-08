@@ -92,7 +92,7 @@ export default function ItemProductCart({productCart,handleDeleteProductCart,han
                     <h3 className="quantityy">
                         <span><i class='bx bx-minus icon-minus' onClick={()=>{setQuantityProductCart( quantityProductCart === 1 ? 1 : quantityProductCart - 1);handleAddNumberProductCart(index,(quantityProductCart === 1 ? 1 : quantityProductCart - 1))}}></i></span>
                         <span className="quantity">{quantityProductCart}</span>
-                        <span><i class='bx bx-plus icon-plus' onClick={()=>{setQuantityProductCart(quantityProductCart + 1); handleAddNumberProductCart(index,(quantityProductCart + 1))}}></i></span>
+                        <span><i class='bx bx-plus icon-plus' onClick={()=>{setQuantityProductCart(quantityProductCart == productCart.sizeChoosed.number ? quantityProductCart : quantityProductCart + 1); handleAddNumberProductCart(index,(quantityProductCart == productCart.sizeChoosed.number ? quantityProductCart : quantityProductCart + 1))}}></i></span>
                     </h3>
                 </div>
 

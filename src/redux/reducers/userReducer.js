@@ -53,12 +53,7 @@ function userReducers(state = initialState, action) {
                 status: action.payload,
                 isLoading: false,
             }
-        case actionTypes.USER_GET_SINGLE:
-            return{
-                ...state,
-                userSingle: action.payload,
-                isLoading: false,
-            }
+
         case actionTypes.USER_EDIT_BY_ID:
             return{
                 ...state,

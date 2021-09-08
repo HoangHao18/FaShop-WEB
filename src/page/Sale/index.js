@@ -4,29 +4,53 @@ import SeparatorBar from "../../components/SeparatorBar";
 import "./style.scss";
 import FeaturedProduct from "../../components/FeaturedProduct";
 import { SearchOutline } from 'react-ionicons'
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {useDispatch, useSelector} from 'react-redux';
 import { useHistory } from "react-router";
-import { getListProductsAsync } from "../../redux/actions/productAction";
-import NumberFormat from 'react-number-format';
+import { getListProductsAsync, getProductsByCategoryAsync } from "../../redux/actions/productAction";
+//import NumberFormat from 'react-number-format';
 import { getListCategoriesNameAsync } from "../../redux/actions/categoryAction";
 
 
 export  default function About(){
-    let history = useHistory();
+    //let history = useHistory();
     let dispatch = useDispatch();
     useEffect(() => {
         dispatch(getListProductsAsync());
         dispatch(getListCategoriesNameAsync())
-    }, []);
+    },[]);
    
     const productList = useSelector((state) => state.products.productList);
+    //const productList = useSelector((state) => state.products.productFilterByCategory);
     const isLoading = useSelector(state => state.products.isLoading)
     const categoryListName = useSelector((state) => state.categories.categoryListName);
     // const handleOpenDetailProduct = (idP) => {
     //     console.log("mmmmmmmmmmmmmmmmmmmmmmmmmm",idP)
     //     history.push(`/detailsProduct/${idP}`)
     // }
+    const [productListRender, setProductListRender] = useState(productList);
+    useEffect(() => {
+        setProductListRender(productList)
+      },[productList]);
+
+    const handleFilterProduct = (categoryName) =>{
+        dispatch(getProductsByCategoryAsync(categoryName))
+        .then(res => {
+            if (res.ok) {
+                // Thành công
+                setProductListRender(res.productFilterByCategory)   
+            } else {
+                // Thất bại
+                //console.log("status",status)
+                setProductListRender([]) 
+            }
+        });
+        
+    }
+
+    const handleGetAllProduct = () =>{
+        setProductListRender(productList)
+    }
 
     return(
         <div className="sale-page-container">
@@ -39,11 +63,11 @@ export  default function About(){
                         <div className="categories">
                             <h3 className="title">Danh mục</h3>
                             <ul className="list-categories">
-                                <li>Tất cả</li>
+                                <li onClick={()=>handleGetAllProduct()}>Tất cả</li>
                                 {
                                     categoryListName && categoryListName.length > 0 ? (
                                         categoryListName.map((item, index) => 
-                                           <li key={index}>{item.name}</li>
+                                           <li key={index} onClick={()=>handleFilterProduct(item.name)}>{item.name}</li>
                                         )
                                    ) : '' 
                                 }
@@ -67,9 +91,9 @@ export  default function About(){
                         {
                             isLoading ? <div>Loading...</div> :
                             (
-                                productList && productList.length > 0 ? (
+                                productListRender && productListRender.length > 0 ? (
                                        
-                                    productList.map((item, index) => 
+                                    productListRender.map((item, index) => 
                                         <div className="col-4">
                                             <FeaturedProduct image={process.env.REACT_APP_API_IMG + item.images[0]}
                                                 name = {item.name}

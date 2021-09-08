@@ -73,7 +73,7 @@ export const createProductAsync = (data) => {
     }
 }
 
-//delete category
+//delete 
 const deleteProduct = () => ({
     type: actionTypes.PRODUCT_DELETE_BY_ID,
 })
@@ -122,13 +122,60 @@ export const getSingleProductAsync = (id) => {
                 ok: false
             }
         };
-    }
-        
-        
-      
-       
+    }  
 }
 
+//edit single product
+const editProduct = () => ({
+    type: actionTypes.PRODUCT_EDIT_BY_ID,
+})
+
+export const editProductAsync = (id,data) => (dispatch) => {
+        ProductService.editProduct(id,data)
+        .then(response => {
+            console.log("response: ", response);
+            dispatch(editProduct());
+            dispatch(getListProductsAsync());
+            //toast.success("EDIT SUCCESS");
+        })
+        .catch((error) => {
+            console.log("error.response: ", error.response);
+            const errorList = Object.values(error.response.data.message);
+            errorList.map((item) => {
+                toast.error(item);
+            })
+        });
+}
+
+
+//get product by category
+const getProductsByCategory = (products) => ({
+    type: actionTypes.PRODUCT_GET_BY_CATEGORY,
+    payload: products,
+
+})
+
+export const getProductsByCategoryAsync = (category) => {
+    return async function(dispatch){
+        try{
+            let response = (await ProductService.getProductByCategory(category))
+            if(response.data.success == true || response.status === 200 || response.status === 201){
+                dispatch(getProductsByCategory(response.data.data));
+                //toast.success("CREATE SUCCESS");
+              
+                return {
+                    ok: true,
+                    productFilterByCategory: response.data.data
+                }
+            }
+        }catch(error){
+            console.log("error: ",error);
+            return{
+                ok: false
+            }
+        };
+    }  
+}
 
 
 

@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import './style.scss'
 import { loginCheckLocalAsync, logout } from '../../redux/actions/authAction';
 import { useEffect } from 'react';
@@ -38,6 +38,12 @@ export default function HeaderBar(){
         //history.push("/");
 
     }     
+
+    let history = useHistory();
+    const handleOrdersOfUser = (userId) => {
+        history.push(`/orders/${userId}`);
+    }
+
     return(
         <div className="header-bar row">
             <div className="col logo-page">
@@ -50,13 +56,17 @@ export default function HeaderBar(){
                     <li><Link to="/blog">Blog</Link></li>
                     <li><Link to="/about">About</Link></li>
                     <li><Link to="/contact">Contact</Link></li>
-                    <li><Link to="/contact">New</Link></li>
                 </ul>
             </div>
 
             <div className="col icon-tool-page">
             <Link to="/cart"><span className="icon-cart-2"><i class='bx bx-shopping-bag icon-2'></i></span></Link>   
-           
+                 {
+                    isLogin && userCurrent.name !==" "  ?
+                        <span className="icon-cart-2" onClick={()=>handleOrdersOfUser(userCurrent.id)}><i class='bx bx-detail icon-2'></i></span>
+                    : ''
+                }
+
                 {
                     isLogin && userCurrent.name !==" "  ?
                         <div className="info-user-current"> 
@@ -69,6 +79,8 @@ export default function HeaderBar(){
                         </div> 
                     : <Link to="/login"><span className="icon-login-2"><i class='bx bx-log-in-circle icon-2' ></i></span></Link>
                 }
+
+
                 
             </div>
            
